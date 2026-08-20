@@ -1,26 +1,156 @@
 @import "tailwindcss";
 
+/* ============================================================================
+   PRIMITIVOS
+   Rampas crudas del sistema, espejo de las variables del .pen.
+   No usarlas en componentes: siempre pasar por un token semántico de abajo.
+   Deliberadamente NO generan utilidades de Tailwind.
+   ============================================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Neutral — negros cálidos con base marrón, no grises puros */
+  --neutral-950: #050404;
+  --neutral-900: #0c0908;
+  --neutral-850: #0f0c0c;
+  --neutral-800: #1f1b1a;
+  --neutral-700: #35302d;
+  --neutral-600: #57514d;
+  --neutral-400: #8e8781;
+  --neutral-200: #c4beb7;
+  --neutral-100: #e3ded7;
+  --neutral-50: #f6f2ec;
+
+  /* Wine — borgoña del feed de @elaira.mar. Funciona como superficie */
+  --wine-100: #e7cfd0;
+  --wine-200: #c98f93;
+  --wine-300: #a85259;
+  --wine-400: #8c2c34;
+  --wine-500: #7a1f26;
+  --wine-600: #601820;
+  --wine-700: #48111a;
+  --wine-900: #290a10;
+
+  /* Gold — acento de jerarquía */
+  --gold-100: #f5e7c2;
+  --gold-200: #ebd08a;
+  --gold-400: #d9b75f;
+  --gold-500: #c9a24b;
+  --gold-700: #97762f;
+  --gold-900: #5c4718;
+
+  /* Olive — verde del feed. Acento secundario */
+  --olive-100: #e7e6d5;
+  --olive-200: #c9c9a9;
+  --olive-300: #adae83;
+  --olive-400: #9a9c6e;
+  --olive-500: #6e7345;
+  --olive-600: #585c36;
+  --olive-700: #414428;
+  --olive-900: #22240f;
+
+  /* Bone — cremas del feed. Habilitan las secciones claras */
+  --bone-50: #f7f1e7;
+  --bone-100: #efe7d9;
+  --bone-200: #e3d8c6;
+  --bone-300: #d3c5ae;
+  --bone-400: #bcab90;
+  --bone-600: #8a7a62;
+  --bone-800: #443a2e;
+
+  /* Red — el rojo pleno de la flor. Uso puntual, nunca en áreas grandes */
+  --red-100: #fbd9da;
+  --red-300: #f26a6a;
+  --red-400: #e5323c;
+  --red-500: #d9121f;
+  --red-700: #8a0a12;
+  --red-900: #4a050a;
+
+  /* Teal — vetas del pétalo. USO FOTOGRÁFICO ÚNICAMENTE.
+     Retirado de la interfaz: no tiene token semántico a propósito.
+     Lo reemplaza accent-olive. Vive acá solo como referencia de color
+     para retoque de imagen. */
+  --teal-300: #6fcfc0;
+  --teal-500: #2f9e8e;
+  --teal-700: #1b6459;
+  --teal-900: #0e332d;
+
+  /* Base — absolutos. Solo overlays, sombras y texto sobre el botón dorado */
+  --base-white: #ffffff;
+  --base-black: #000000;
 }
 
+/* ============================================================================
+   TOKENS SEMÁNTICOS
+   Lo único que se usa en pantalla. Cada uno apunta a un primitivo.
+   `@theme inline` los convierte en utilidades reales de Tailwind:
+   bg-surface-wine, text-fg-primary, border-hairline, fill-red, etc.
+   ============================================================================ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* --- Superficies ------------------------------------------------------- */
+  /* Fondo por defecto: hero, manifiesto, servicios, footer */
+  --color-surface-primary: var(--neutral-950);
+  /* Secciones oscuras que necesitan despegarse del fondo */
+  --color-surface-raised: var(--neutral-850);
+  /* Borgoña de marca. Hoy sostiene la sección de historia */
+  --color-surface-wine: var(--wine-700);
+  /* Arranque del degradado que calienta la sección de formulario */
+  --color-surface-wine-deep: var(--wine-900);
+  /* Única superficie clara del sitio. Corta el bloque oscuro en testimonios */
+  --color-surface-bone: var(--bone-200);
+
+  /* --- Texto sobre superficies oscuras ----------------------------------- */
+  --color-fg-primary: var(--neutral-50);
+  --color-fg-secondary: var(--neutral-400);
+  --color-fg-muted: var(--neutral-600);
+
+  /* --- Texto sobre superficies claras / borgoña -------------------------- */
+  --color-fg-on-bone: var(--neutral-950);
+  /* Marrón cálido, nunca gris: el gris ensucia el hueso */
+  --color-fg-on-bone-soft: var(--bone-800);
+  /* fg-muted no tiene contraste suficiente contra el wine */
+  --color-fg-on-wine-soft: var(--bone-400);
+
+  /* --- Acentos ----------------------------------------------------------- */
+  /* Relleno del CTA principal, eyebrows y bordes de acento */
+  --color-gold: var(--gold-500);
+  /* Dorado sobre negro cuando hace falta contraste: precios, itálicas, email */
+  --color-gold-bright: var(--gold-200);
+  /* Acento sobre crema: eyebrows y atribuciones de la sección clara */
+  --color-accent-olive: var(--olive-500);
+  /* Acento sobre negro: numeración de servicios. Le saca trabajo al dorado */
+  --color-accent-olive-light: var(--olive-400);
+  /* Identidad: el punto del logotipo. Solo puntual */
+  --color-red: var(--red-500);
+  /* Halos radiales detrás de la flor */
+  --color-red-deep: var(--red-700);
+
+  /* --- Divisores de 1px --------------------------------------------------- */
+  --color-hairline: var(--neutral-800);
+  /* El hairline neutro desaparece contra el borgoña */
+  --color-hairline-wine: var(--wine-500);
+  --color-hairline-bone: var(--bone-300);
+
+  /* --- Tipografía --------------------------------------------------------- */
+  /* Destacados: logotipo, wordmark del hero y footer. Es la didone del logo,
+     con eje óptico activo — a 200px+ las serifas se afinan solas.
+     Uso restringido: si se derrama a titulares comunes pierde el efecto. */
+  --font-display: var(--font-bodoni), "Bodoni Moda", Didot, Georgia, serif;
+  /* Titulares de sección y citas */
+  --font-heading: var(--font-playfair), "Playfair Display", Georgia, serif;
+  /* Cuerpo de texto */
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  /* Labels, eyebrows, metadatos y precios */
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  body {
+    background-color: var(--color-surface-primary);
+    color: var(--color-fg-primary);
+    font-family: var(--font-sans);
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  ::selection {
+    background-color: var(--wine-500);
+    color: var(--neutral-50);
+  }
 }
