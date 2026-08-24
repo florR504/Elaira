@@ -143,6 +143,16 @@
 }
 
 @layer base {
+  /* `clip` y no `hidden`: recorta la sangría horizontal del logotipo sin
+     crear un contenedor de scroll, así el overflow vertical sigue siendo
+     visible y las letras del hero pueden continuar sobre la sección
+     siguiente en vez de cortarse contra el borde.
+     Va en `html` y no en `body`: desde el body la propagación al viewport no
+     se aplica y la página igual scrollea en horizontal. */
+  html {
+    overflow-x: clip;
+  }
+
   body {
     background-color: var(--color-surface-primary);
     color: var(--color-fg-primary);
