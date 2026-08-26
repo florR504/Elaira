@@ -71,7 +71,12 @@ export function Hero() {
 			aria-labelledby="hero-title"
 			className="relative h-screen w-full bg-surface-primary"
 		>
-			<div className="@container relative mx-auto h-full w-full max-w-[1440px]">
+			{/* overflow-x-clip y no hidden: recorta la sangría lateral del logotipo
+			    sin crear contenedor de scroll, así el desborde vertical sigue
+			    visible y las letras continúan sobre la sección siguiente. Va acá
+			    y no en html: en el elemento raíz la propagación al viewport no
+			    frena el scroll horizontal. */}
+			<div className="@container relative mx-auto h-full w-full max-w-[1440px] overflow-x-clip">
 				<div className="absolute inset-x-0 top-[-9%] mx-auto aspect-[1200/2135] h-[78%] md:top-[-26%] md:h-[112%]">
 					<Image
 						src="/flor-elaira.jpg"
