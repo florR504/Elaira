@@ -15,10 +15,8 @@ const RUTA = (i: number) => `/luna/luna_${String(i).padStart(2, '0')}.webp`
  *  bien, pero subir mucho más de esto ya se empieza a ver blando. */
 const LADO_MAX = 680
 
-/** Alto que hay que dejar libre para el nombre de la fase, el porcentaje, la
- *  lectura de abajo y los espacios entre las tres cosas. El disco se queda con
- *  lo que sobra: así crece todo lo que la ventana permita en vez de quedar
- *  atado a una fracción fija del alto. */
+/** En mobile el texto va arriba y abajo del disco, así que hay que reservarle
+ *  alto. En desktop va al costado y el disco se queda con toda la ventana. */
 const RESERVADO = 280
 
 export type FaseLunar = {
@@ -87,8 +85,11 @@ export function SecuenciaLunar({ fases }: Props) {
 		if (!canvas || !ctx) return
 
 		const medir = () => {
+			const anchas = window.matchMedia('(min-width: 768px)').matches
 			lado.current = Math.round(
-				Math.min(window.innerWidth * 0.8, window.innerHeight - RESERVADO, LADO_MAX)
+				anchas
+					? Math.min(window.innerWidth * 0.46, window.innerHeight - 96, LADO_MAX)
+					: Math.min(window.innerWidth * 0.8, window.innerHeight - RESERVADO, LADO_MAX)
 			)
 			const dpr = Math.min(window.devicePixelRatio || 1, 2, 880 / lado.current)
 			canvas.width = lado.current * dpr
@@ -174,31 +175,39 @@ export function SecuenciaLunar({ fases }: Props) {
 		// no hay recorrido que dar —el ciclo no corre—, así que el bloque se
 		// achica a una pantalla en vez de dejar cuatro de negro vacío.
 		<div ref={seccion} className={`relative ${reducido ? '' : 'h-[400svh]'}`}>
-			<div className="sticky top-0 flex h-svh flex-col items-center justify-center gap-8 px-6 md:gap-10">
-				{/* El nombre va arriba del disco, y con alto reservado: sin eso,
-				    cambiar de "Luna nueva" a "Gibosa menguante" mueve la luna. */}
-				<div className="flex min-h-[4.5rem] flex-col items-center gap-2 text-center md:min-h-[5.5rem]">
-					<p
-						aria-live="polite"
-						className="font-heading text-titulo-xs font-normal text-fg-primary"
-					>
-						{actual.nombre}
-					</p>
-					<p className="font-mono text-etiqueta uppercase text-fg-muted tabular-nums">
-						{iluminada}% iluminada
-					</p>
-				</div>
-
+			<div className="sticky top-0 flex h-svh flex-col items-center justify-center gap-6 px-6 md:flex-row md:gap-[6%] md:px-margen">
+				{/* En desktop el disco va a la izquierda y el texto al costado; en
+				    mobile se apila con el nombre arriba y la lectura abajo.
+				    Un solo DOM para las dos disposiciones: la columna de texto es
+				    `display:contents` en mobile —sus hijos pasan a ser items del
+				    mismo flex que el canvas— y el intercalado lo resuelve `order`.
+				    Tocar cualquiera de los dos rompe el orden en mobile. */}
 				<canvas
 					ref={lienzo}
 					role="img"
 					aria-label={`Luna en fase ${actual.nombre.toLowerCase()}, ${iluminada}% iluminada`}
-					className="block [filter:drop-shadow(0_0_70px_rgba(150,170,255,0.14))]"
+					className="order-2 block shrink-0 md:order-none [filter:drop-shadow(0_0_70px_rgba(150,170,255,0.14))]"
 				/>
 
-				<p className="min-h-[5.5rem] max-w-[34rem] text-center text-cuerpo text-fg-secondary md:min-h-[4.5rem]">
-					{actual.descripcion}
-				</p>
+				{/* Ancho fijo en desktop: si la columna se encoge con los nombres
+				    cortos, la fila se recentra y el disco se mueve. */}
+				<div className="contents md:flex md:w-[24rem] md:flex-col md:items-start md:gap-6">
+					<div className="order-1 flex min-h-[4.5rem] flex-col items-center gap-2 text-center md:order-none md:min-h-0 md:items-start md:text-left">
+						<p
+							aria-live="polite"
+							className="font-heading text-titulo-s font-normal text-fg-primary"
+						>
+							{actual.nombre}
+						</p>
+						<p className="font-mono text-etiqueta uppercase tabular-nums text-fg-muted">
+							{iluminada}% iluminada
+						</p>
+					</div>
+
+					<p className="order-3 min-h-[5.5rem] max-w-[34rem] text-center text-cuerpo text-fg-secondary md:order-none md:min-h-0 md:max-w-none md:text-left">
+						{actual.descripcion}
+					</p>
+				</div>
 			</div>
 		</div>
 	)
