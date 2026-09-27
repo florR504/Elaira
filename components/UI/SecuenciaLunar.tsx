@@ -10,9 +10,16 @@ gsap.registerPlugin(ScrollTrigger)
 const TOTAL = 48
 const RUTA = (i: number) => `/luna/luna_${String(i).padStart(2, '0')}.webp`
 
-/** Lado máximo del disco en píxeles CSS. Los archivos miden 440: por encima de
- *  eso se estaría ampliando, y en una foto de cráteres se nota enseguida. */
-const LADO_MAX = 420
+/** Lado máximo del disco en píxeles CSS. Los archivos miden 440, así que acá
+ *  se está ampliando: en una foto de cráteres con el borde difuminado aguanta
+ *  bien, pero subir mucho más de esto ya se empieza a ver blando. */
+const LADO_MAX = 680
+
+/** Alto que hay que dejar libre para el nombre de la fase, el porcentaje, la
+ *  lectura de abajo y los espacios entre las tres cosas. El disco se queda con
+ *  lo que sobra: así crece todo lo que la ventana permita en vez de quedar
+ *  atado a una fracción fija del alto. */
+const RESERVADO = 280
 
 export type FaseLunar = {
 	/** Fracción iluminada a la que corresponde, de 0 a 1. */
@@ -80,10 +87,10 @@ export function SecuenciaLunar({ fases }: Props) {
 		if (!canvas || !ctx) return
 
 		const medir = () => {
-			const dpr = Math.min(window.devicePixelRatio || 1, 2)
 			lado.current = Math.round(
-				Math.min(window.innerWidth * 0.62, window.innerHeight * 0.44, LADO_MAX)
+				Math.min(window.innerWidth * 0.8, window.innerHeight - RESERVADO, LADO_MAX)
 			)
+			const dpr = Math.min(window.devicePixelRatio || 1, 2, 880 / lado.current)
 			canvas.width = lado.current * dpr
 			canvas.height = lado.current * dpr
 			canvas.style.width = `${lado.current}px`
