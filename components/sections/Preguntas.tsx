@@ -71,7 +71,7 @@ export function Preguntas() {
 
 			<MazoConDescripcion preguntas={PREGUNTAS}>
 				<p className="font-mono text-etiqueta uppercase text-gold">
-					(05) — Preguntas frecuentes
+					(06) — Preguntas frecuentes
 				</p>
 				<h2
 					id="preguntas-title"

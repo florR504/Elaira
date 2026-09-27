@@ -17,7 +17,7 @@ export function Contacto() {
 		>
 			<div className="mx-auto flex w-full max-w-pagina flex-col gap-10 px-6 py-20 md:flex-row md:items-start md:gap-16 md:px-margen md:py-seccion">
 				<div className="md:w-[360px] md:shrink-0">
-					<p className="font-mono text-etiqueta uppercase text-gold">(06) — Contacto</p>
+					<p className="font-mono text-etiqueta uppercase text-gold">(07) — Contacto</p>
 					<h2
 						id="contacto-title"
 						className="mt-5 font-heading text-titulo-xs font-normal text-fg-primary"
