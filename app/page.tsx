@@ -1,3 +1,4 @@
+import { Contacto } from '@/components/sections/Contacto'
 import { Hero } from '@/components/sections/Hero'
 import { Historia } from '@/components/sections/Historia'
 import { Manifiesto } from '@/components/sections/Manifiesto'
@@ -14,6 +15,7 @@ export default function Home() {
 			<Servicios />
 			<Testimonios />
 			<Preguntas />
+			<Contacto />
 		</main>
 	)
 }
