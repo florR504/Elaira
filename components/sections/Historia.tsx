@@ -4,7 +4,7 @@ import { Reveal } from '@/components/UI/Reveal'
 const PHOTOS = [
 	{
 		src: '/Elaira.jpeg',
-		alt: 'Elaira leyendo cartas sobre una mesa a la luz de una vela',
+		alt: 'Elaïra leyendo cartas sobre una mesa a la luz de una vela',
 		width: 768,
 		height: 1376,
 		size: 'h-[430px] md:h-[700px]',
@@ -32,7 +32,7 @@ const PHOTOS = [
 	},
 	{
 		src: '/Elaira_2.jpeg',
-		alt: 'Elaira junto a una ventana en una habitación en penumbra',
+		alt: 'Elaïra junto a una ventana en una habitación en penumbra',
 		width: 768,
 		height: 1376,
 		size: 'h-[440px] md:h-[720px]',
@@ -61,42 +61,34 @@ const CHAPTERS = [
 	{
 		label: '04 — LA VIDA',
 		title: 'Sentir',
-		lead: 'Siento todo al cien por ciento. Sin filtro, sin volumen bajo. Puedo sentir un asombro inmenso, una alegría profunda y un amor incondicional. Pero también una tristeza que ma atraviesa, miedo o incluso desesperación.',
-		close: 'Pero me hipersensibilidad no es un defecto. Es una forma de estar viva.',
+		lead: 'Siento todo al cien por ciento. Sin filtro, sin volumen bajo. Puedo sentir un asombro inmenso, una alegría profunda y un amor incondicional. Pero también una tristeza que me atraviesa, miedo o incluso desesperación.',
+		close: 'Pero mi hipersensibilidad no es un defecto. Es una forma de estar viva.',
 	},
 	{
 		label: '05 — EL PROPÓSITO',
 		title: 'ELAÏRA',
-		lead: 'Un día, en clariaudiencia escuché un nombre: Elaïra. Más tarde descubrí que es una luna que orbita alrededor de Júpiter, el planeta que domina mi carta natal. No fue una coincidencia, fue un reconocimiento.',
-		close: 'Elaïra es la firma vibratoria de mi alma. Y hoy, esa firma tiene un propósito: ayudarte a encontrar la tuya',
+		lead: 'Un día, en clariaudiencia, escuché un nombre: Elaïra. Más tarde descubrí que es una luna que orbita alrededor de Júpiter, el planeta que domina mi carta natal. No fue una coincidencia, fue un reconocimiento.',
+		close: 'Elaïra es la firma vibratoria de mi alma. Y hoy, esa firma tiene un propósito: ayudarte a encontrar la tuya.',
 		closeHighlighted: true,
 	},
 ]
 
 /**
- * Historia — dos columnas en desktop: pila de fotos a la izquierda, relato en
- * capítulos a la derecha. En mobile colapsa a una sola columna con foto y
- * capítulo alternados.
+ * Historia — fotos a la izquierda y capítulos a la derecha en desktop; en
+ * mobile, una columna con foto y capítulo alternados.
  *
- * Es un solo DOM para las dos disposiciones. Los contenedores de cada columna
- * son `display:contents` en mobile —sus hijos pasan a ser items directos de la
- * grilla— y `flex` de md para arriba. El intercalado en mobile lo resuelve
- * `order`, con valores que quedan crecientes dentro de cada columna, así en
- * desktop no hay que resetear nada. La alternativa era renderizar dos veces y
- * duplicar la descarga de las cinco fotos.
- *
- * `justify-between` en la columna de texto reparte los capítulos a lo largo del
- * alto de la columna de fotos. En el diseño de Pencil eso está resuelto con un
- * gap fijo de 268px calculado a mano; acá sale solo y sobrevive a que cambien
- * las alturas de las fotos.
+ * Un solo DOM para las dos disposiciones: las columnas son `display:contents`
+ * en mobile —sus hijos pasan a ser items de la grilla— y el intercalado lo
+ * resuelve `order`. Tocar cualquiera de los dos rompe el orden en mobile.
  */
 export function Historia() {
 	return (
 		<section
 			id="historia"
 			aria-labelledby="historia-title"
-			className="mx-auto w-full max-w-[1440px] px-6 py-20 md:px-[60px] md:py-[48px]"
+			className="mx-auto w-full max-w-pagina px-6 pb-28 pt-20 md:px-borde md:pb-seccion md:pt-12"
 		>
+			<p className="font-mono text-etiqueta uppercase text-gold mb-6">(01) — Mi Historia</p>
 			<div className="grid grid-cols-1 gap-y-12 md:grid-cols-[560px_1fr] md:gap-x-24 md:gap-y-0">
 				<div className="contents md:flex md:flex-col md:gap-6">
 					{PHOTOS.map((photo, i) => (
@@ -117,14 +109,14 @@ export function Historia() {
 					<Reveal style={{ order: 0 }} className="md:max-w-[540px]">
 						<h2
 							id="historia-title"
-							className="font-heading text-[clamp(3.25rem,5.5vw,80px)] font-normal bg-surface-wine leading-none  tracking-[-0.025em] text-fg-primary"
+							className="font-heading text-titulo-m font-normal bg-surface-wine text-fg-primary"
 						>
 							Mi alma
 						</h2>
-						<p className="mt-5 text-[16px] leading-[1.6] text-fg-secondary">
-							Hace un tiempo, una voz en clariaudiencia me susurro un nombre: ELAIRA.
+						<p className="mt-5 text-cuerpo-l text-fg-secondary">
+							Hace un tiempo, una voz en clariaudiencia me susurró un nombre: Elaïra.
 							Más tarde descubrí que este nombre designa a una luna que gravita en una
-							órbita sagrada alrededor de Júpiter
+							órbita sagrada alrededor de Júpiter.
 						</p>
 					</Reveal>
 
@@ -135,17 +127,15 @@ export function Historia() {
 							style={{ order: 2 + i * 2 }}
 							className="border-t border-hairline pt-6 md:max-w-[540px] md:pr-8"
 						>
-							<p className="font-mono text-[10px] uppercase tracking-[0.18em] text-gold">
+							<p className="font-mono text-etiqueta-s uppercase text-gold">
 								{chapter.label}
 							</p>
-							<h3 className="mt-5 font-heading  bg-surface-wine text-[clamp(2rem,2.5vw,36px)] font-normal leading-[1.15] tracking-[-0.02em] text-fg-primary">
+							<h3 className="mt-5 font-heading bg-surface-wine text-titulo-xs font-normal text-fg-primary">
 								{chapter.title}
 							</h3>
-							<p className="mt-5 text-[15px] leading-[1.75] text-fg-primary">
-								{chapter.lead}
-							</p>
+							<p className="mt-5 text-cuerpo text-fg-primary">{chapter.lead}</p>
 							<p
-								className={`mt-5 text-[15px] leading-[1.75] ${
+								className={`mt-5 text-cuerpo ${
 									chapter.closeHighlighted
 										? 'italic text-gold-bright'
 										: 'text-fg-secondary'
