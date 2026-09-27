@@ -184,12 +184,10 @@ export function MazoTarot({ cartas, className = '', onCambio }: Props) {
 			</ul>
 
 			<div className="absolute -bottom-8 left-0 flex w-full items-center justify-between">
-				<span className="font-mono text-[11px] tracking-[0.18em] text-gold-bright">
+				<span className="font-mono text-etiqueta text-gold-bright">
 					{cartas[frente]?.numeral} / {cartas[cartas.length - 1]?.numeral}
 				</span>
-				<span className="font-mono text-[9px] tracking-[0.18em] text-fg-muted">
-					TOCÁ PARA BARAJAR
-				</span>
+				<span className="font-mono text-etiqueta-s text-fg-muted">TOCÁ PARA BARAJAR</span>
 			</div>
 		</div>
 	)

@@ -1,13 +1,6 @@
 'use client'
 
-import {
-	useCallback,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useState,
-	type ReactNode,
-} from 'react'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import gsap from 'gsap'
 import { MazoTarot, type CartaData } from './MazoTarot'
 
@@ -64,13 +57,13 @@ export function MazoConDescripcion({ preguntas, children }: Props) {
 				{children}
 
 				<div ref={panel} className="mt-10 md:mt-14" key={activo}>
-					<p className="font-mono text-[10px] uppercase tracking-[0.18em] text-gold md:text-[12px]">
+					<p className="font-mono text-etiqueta-s uppercase text-gold md:text-etiqueta-l">
 						{p.numeral} — {p.etiqueta}
 					</p>
-					<h3 className="mt-4 font-heading text-[clamp(1.5rem,2.2vw,30px)] font-normal leading-[1.25] tracking-[-0.02em] text-fg-primary md:mt-5">
+					<h3 className="mt-4 font-heading text-titulo-xs font-normal text-fg-primary md:mt-5">
 						{p.pregunta}
 					</h3>
-					<p className="mt-4 text-[15px] leading-[1.7] text-fg-secondary md:mt-6 md:text-[19px] md:leading-[1.6]">
+					<p className="mt-4 text-cuerpo text-fg-secondary md:mt-6 md:text-cuerpo-xl">
 						{p.respuesta}
 					</p>
 				</div>

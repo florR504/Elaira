@@ -30,8 +30,8 @@ export function CartaTarot({ numeral, tema, etiqueta, imagen, tono }: Props) {
 				tono === 'wine' ? 'bg-surface-raised' : 'bg-surface-primary'
 			}`}
 		>
-			<div className="flex h-full w-full flex-col items-center justify-between border border-gold px-[18px] py-[22px]">
-				<span className="font-display text-[20px] tracking-[0.15em] text-gold-bright">
+			<div className="flex h-full w-full flex-col items-center justify-between border border-gold px-5 py-5">
+				<span className="font-display text-cuerpo-xl tracking-widest text-gold-bright">
 					{numeral}
 				</span>
 
@@ -47,10 +47,10 @@ export function CartaTarot({ numeral, tema, etiqueta, imagen, tono }: Props) {
 
 				<div className="flex w-full flex-col items-center gap-2.5">
 					<span className="h-px w-10 bg-gold" />
-					<span className="text-center font-heading text-[22px] leading-[1.15] text-fg-primary">
+					<span className="text-center font-heading text-titulo-2xs leading-tight text-fg-primary">
 						{tema}
 					</span>
-					<span className="font-mono text-[9px] uppercase tracking-[0.18em] text-fg-on-wine-soft">
+					<span className="font-mono text-etiqueta-s uppercase text-fg-on-wine-soft">
 						{etiqueta}
 					</span>
 				</div>
