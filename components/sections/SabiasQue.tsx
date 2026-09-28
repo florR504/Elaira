@@ -5,49 +5,35 @@ import { SecuenciaLunar, type FaseLunar } from '@/components/UI/SecuenciaLunar'
  * voz del sitio y el largo que tendrían las reales, pero hay que reemplazarlas
  * por las tuyas.
  *
- * El orden arranca en luna llena y recorre el ciclo hasta volver a ella, que es
- * el orden de los fotogramas.
+ * El recorrido va de luna llena a luna nueva y ahí termina: de la nueva en
+ * adelante la Luna vuelve a crecer y las siluetas repiten las de esta mitad,
+ * espejadas.
  */
 const FASES: FaseLunar[] = [
 	{
 		nombre: 'Luna llena',
 		descripcion:
-			'Naciste con todo a la vista. Tu carta tiende a la expresión: lo que sentís se nota antes de que lo digas, y aprender a dosificar esa luz suele ser el trabajo de una vida.',
+			'ILUMINACIÓN · RELACIÓN  Sos un alma que llega esta vida para ver claro - a si misma y a los demás. Tu consciencia es amplia, panorámica. Misión: vivir tus relaciones como espejos de crecimiento. Es a través del vínculo que tu alma se revela.',
 	},
 	{
 		nombre: 'Gibosa menguante',
 		descripcion:
-			'Llegaste justo después del punto máximo. Sos de quienes entienden las cosas mientras las explican, y necesitan compartir lo que descubren para terminar de creerlo.',
+			'TRANSMISIÓN · ENSEÑANZA Sos un alma que llega para compartir lo que sabe. Naciste con una vocación pedagógica, comunicacional, mediática. Misión: transmitir tu experiencia y tu sabiduría al mundo. Escribir, enseñar, hablar, crear contenido.',
 	},
 	{
 		nombre: 'Cuarto menguante',
 		descripcion:
-			'Naciste en el momento de soltar. Se te da revisar, corregir y desarmar lo que ya no sirve — y te cuesta más empezar de cero que reconstruir sobre lo que había.',
+			'CRISIS DE CONSCIENCIA · REBELDÍA Sos un alma que cuestiona los sistemas heredados. Naciste con una capacidad natural para ver lo que ya no funciona y desafiarlo. Reto: No quedarte solo en la crítica. Después de desconstruir, hay que reconstruir con visión propia.',
 	},
 	{
 		nombre: 'Balsámica',
 		descripcion:
-			'La fase más silenciosa del ciclo. Quienes nacen acá suelen sentirse un paso afuera de su época, y encuentran su lugar cuando dejan de pelear contra esa distancia.',
+			'LIBERACIÓN · SABIDURÍA ANTIGUA Sos un alma vieja llegando al final de un gran ciclo. Traés mucha sabiduría acumulada - a veces tanto que te cuesta encajar en este mundo. Misión: soltar lo que ya no te pertenece, transmitir tu sabiduría a los pocos que puedan recibirla, prepararte para el próximo gran ciclo.',
 	},
 	{
 		nombre: 'Luna nueva',
 		descripcion:
 			'Empezaste con la página en blanco. Hay un impulso de arranque que no se apaga: se te dan los comienzos, aunque no siempre estés para ver cómo terminan.',
-	},
-	{
-		nombre: 'Creciente',
-		descripcion:
-			'Naciste con el primer envión ya dado. Tu desafío es sostener lo que empezaste cuando deja de ser novedoso, que es justo donde se decide si algo existe o no.',
-	},
-	{
-		nombre: 'Cuarto creciente',
-		descripcion:
-			'La fase de la crisis fértil. Te formaste empujando contra algo, y la tensión no es un obstáculo en tu carta: es el motor con el que construís.',
-	},
-	{
-		nombre: 'Gibosa creciente',
-		descripcion:
-			'Casi llena, todavía en camino. Hay una exigencia de perfeccionar antes de mostrar, y el aprendizaje es soltar la obra aunque no esté terminada del todo.',
 	},
 ]
 
@@ -72,13 +58,13 @@ export function SabiasQue() {
 					id="sabias-que-title"
 					className="mt-6 max-w-[20ch] font-heading text-titulo-l font-normal text-fg-primary"
 				>
-					La Luna estaba en una fase exacta cuando{' '}
-					<em className="italic text-gold-bright">naciste</em>
+					La memoria lunar de <em className="italic text-gold-bright">tu encarnación</em>
 				</h2>
-				<p className="mt-8 max-w-[46ch] text-cuerpo text-fg-secondary">
-					No es lo mismo llegar al mundo con la Luna creciendo que con la Luna apagándose.
-					Esa fase describe desde qué lugar empezás las cosas. Recorré el ciclo y buscá la
-					tuya.
+				<p className="mt-8  text-cuerpo text-fg-secondary">
+					La astrología popular te habla mucho de tu Sol, tu Luna y tu Ascendente Pero muy
+					pocos te hablan de la fase lunar en la que naciste. Y sin embargo esta
+					enformación revela algo profundo: en que momento del ciclo evolutivo te
+					encuentras al llegar a esta vida.
 				</p>
 			</div>
 

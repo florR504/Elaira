@@ -6,8 +6,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-/** Fotogramas del ciclo. 0 es luna llena, 24 luna nueva, y el 47 enlaza con el 0. */
+/** Fotogramas del ciclo completo, para la cuenta de la fracción iluminada.
+ *  0 es luna llena y 24 luna nueva. */
 const TOTAL = 48
+
+/** Hasta dónde llega el recorrido: la luna nueva. Pasado ese punto la Luna
+ *  vuelve a crecer y las siluetas son las mismas de la primera mitad,
+ *  espejadas, así que el scroll seguiría avanzando sin mostrar nada nuevo. */
+const ULTIMO = 24
 const RUTA = (i: number) => `/luna/luna_${String(i).padStart(2, '0')}.webp`
 
 /** Lado máximo del disco en píxeles CSS. Los archivos miden 440, así que acá
@@ -108,7 +114,7 @@ export function SecuenciaLunar({ fases }: Props) {
 
 			const k = (1 - Math.cos(2 * Math.PI * (i / TOTAL) + Math.PI)) / 2
 			setIluminada(Math.round(k * 100))
-			setFase(Math.round((i / TOTAL) * fases.length) % fases.length)
+			setFase(Math.round((i / ULTIMO) * (fases.length - 1)))
 		}
 
 		// El primero entra aparte para que haya luna desde el principio; el
@@ -132,7 +138,7 @@ export function SecuenciaLunar({ fases }: Props) {
 			([e]) => {
 				if (!e.isIntersecting) return
 				io.disconnect()
-				for (let i = 1; i < TOTAL; i++) cargar(i)
+				for (let i = 1; i <= ULTIMO; i++) cargar(i)
 			},
 			{ rootMargin: '100% 0px' }
 		)
@@ -147,7 +153,7 @@ export function SecuenciaLunar({ fases }: Props) {
 		// `snap` porque los fotogramas son discretos: sin él, el índice llega
 		// fraccionado y el redondeo lo hace saltar de a dos en los bordes.
 		const animacion = gsap.to(cuadro.current, {
-			i: TOTAL - 1,
+			i: ULTIMO,
 			snap: 'i',
 			ease: 'none',
 			scrollTrigger: {
@@ -174,7 +180,7 @@ export function SecuenciaLunar({ fases }: Props) {
 		// arriba mientras la sección entera lo atraviesa. Con movimiento reducido
 		// no hay recorrido que dar —el ciclo no corre—, así que el bloque se
 		// achica a una pantalla en vez de dejar cuatro de negro vacío.
-		<div ref={seccion} className={`relative ${reducido ? '' : 'h-[400svh]'}`}>
+		<div ref={seccion} className={`relative ${reducido ? '' : 'h-[260svh]'}`}>
 			<div className="sticky top-0 flex h-svh flex-col items-center justify-center gap-6 px-6 md:flex-row md:gap-[6%] md:px-margen">
 				{/* En desktop el disco va a la izquierda y el texto al costado; en
 				    mobile se apila con el nombre arriba y la lectura abajo.
