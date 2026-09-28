@@ -8,13 +8,20 @@ gsap.registerPlugin(Draggable)
 
 /**
  * Distancia entre carta y carta dentro del bucle, en unidades de tiempo de la
- * timeline. Su inversa es cuántas cartas se ven a la vez: 0.25 son cuatro.
+ * timeline. Su inversa es cuántas cartas se ven a la vez: con 0.1 son diez.
  *
- * Tiene que ser mayor o igual a 1 / cantidad de cartas. Si es menor, una misma
- * carta vuelve a entrar en escena antes de que su instancia anterior haya
- * salido, y como es el mismo nodo del DOM las dos animaciones se pisan.
+ * Ese número tiene que entrar en la cantidad de nodos del DOM. Si no entra,
+ * una misma carta vuelve a entrar en escena antes de que su instancia anterior
+ * haya salido y, al ser el mismo nodo, el segundo tween le pisa la posición al
+ * primero: la carta que debería irse por la izquierda se teletransporta al
+ * punto de entrada. Por eso cada pregunta se renderiza dos veces — es lo mismo
+ * que hace el demo del que sale esto, que repite siete imágenes para llegar a
+ * catorce cartas.
  */
-const PASO = 0.25
+const PASO = 0.1
+
+/** Cuántas veces se repite cada pregunta en la pista. */
+const COPIAS = 2
 
 export type PreguntaCarta = {
 	numeral: string
@@ -108,6 +115,13 @@ export function CarruselPreguntas({ preguntas }: Props) {
 
 	const total = preguntas.length
 
+	// La pista lleva las preguntas repetidas; las copias van `aria-hidden` para
+	// que un lector de pantalla lea cada pregunta una sola vez.
+	const tarjetas = Array.from({ length: total * COPIAS }, (_, i) => ({
+		...preguntas[i % total],
+		copia: Math.floor(i / total),
+	}))
+
 	useEffect(() => {
 		const lista = pista.current
 		if (!lista || reducido) return
@@ -156,7 +170,8 @@ export function CarruselPreguntas({ preguntas }: Props) {
 			paused: true,
 			onUpdate() {
 				bucle.time(envolver(cabezal.offset))
-				setActiva(((Math.round(cabezal.offset / PASO) % total) + total) % total)
+				const n = total * COPIAS
+				setActiva((((Math.round(cabezal.offset / PASO) % n) + n) % n) % total)
 			},
 		})
 
@@ -218,10 +233,13 @@ export function CarruselPreguntas({ preguntas }: Props) {
 						: 'relative mx-auto grid h-[26rem] w-[17rem] list-none touch-pan-y place-items-center sm:h-[28rem] sm:w-[19rem]'
 				}
 			>
-				{preguntas.map((p, i) => (
+				{(reducido ? preguntas.map((p) => ({ ...p, copia: 0 })) : tarjetas).map((p, i) => (
 					<li
-						key={p.numeral}
-						aria-current={!reducido && i === activa ? 'true' : undefined}
+						key={`${p.numeral}-${p.copia}`}
+						aria-hidden={p.copia > 0 || undefined}
+						aria-current={
+							!reducido && i % total === activa && p.copia === 0 ? 'true' : undefined
+						}
 						className={
 							reducido
 								? 'w-full'
