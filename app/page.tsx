@@ -1,4 +1,5 @@
 import { Contacto } from '@/components/sections/Contacto'
+import { Footer } from '@/components/sections/Footer'
 import { IndiceLateral } from '@/components/UI/IndiceLateral'
 import { Hero } from '@/components/sections/Hero'
 import { Historia } from '@/components/sections/Historia'
@@ -10,16 +11,19 @@ import { Testimonios } from '@/components/sections/Testimonios'
 
 export default function Home() {
 	return (
-		<main className="flex-1">
-			<IndiceLateral />
-			<Hero />
-			<Manifiesto />
-			<Historia />
-			<Servicios />
-			<Testimonios />
-			<SabiasQue />
-			<Preguntas />
-			<Contacto />
-		</main>
+		<>
+			<main className="flex-1">
+				<IndiceLateral />
+				<Hero />
+				<Manifiesto />
+				<Historia />
+				<Servicios />
+				<Testimonios />
+				<SabiasQue />
+				<Preguntas />
+				<Contacto />
+			</main>
+			<Footer />
+		</>
 	)
 }
