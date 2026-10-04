@@ -11,19 +11,19 @@ import { useEffect, useRef, useState } from 'react'
  * no son secciones del índice, son la apertura.
  */
 const SECCIONES = [
-	{ id: 'historia', numero: '01', nombre: 'Mi historia' },
-	{ id: 'proposito', numero: '02', nombre: 'Mi propósito' },
-	{ id: 'servicios', numero: '03', nombre: 'Mis servicios' },
-	{ id: 'testimonios', numero: '04', nombre: 'Testimonios' },
-	{ id: 'sabias-que', numero: '05', nombre: 'Sabías que' },
-	{ id: 'preguntas', numero: '06', nombre: 'Preguntas frecuentes' },
-	{ id: 'contacto', numero: '07', nombre: 'Contacto' },
+	{ id: 'historia', numero: '01', nombre: 'Mi historia', corto: 'Historia' },
+	{ id: 'proposito', numero: '02', nombre: 'Mi propósito', corto: 'Propósito' },
+	{ id: 'servicios', numero: '03', nombre: 'Mis servicios', corto: 'Servicios' },
+	{ id: 'testimonios', numero: '04', nombre: 'Testimonios', corto: 'Testimonios' },
+	{ id: 'sabias-que', numero: '05', nombre: 'Sabías que', corto: 'Sabías que' },
+	{ id: 'preguntas', numero: '06', nombre: 'Preguntas frecuentes', corto: 'Preguntas' },
+	{ id: 'contacto', numero: '07', nombre: 'Contacto', corto: 'Contacto' },
 ]
 
 /**
- * Índice de secciones. En desktop es un contador en la esquina inferior
- * derecha que se despliega en la lista al acercar el mouse; en mobile, un
- * botón en el mismo lugar que abre el índice a pantalla completa.
+ * Navegación de la página. En desktop, una barra superior que aparece al
+ * scrollear hacia arriba; en mobile, un botón fijo que abre el índice a
+ * pantalla completa.
  *
  * Resuelve dos cosas a la vez en una página de trece pantallas: llegar a una
  * sección sin recorrerlas todas, y saber cuánto falta — hasta ahora se
@@ -38,7 +38,7 @@ const SECCIONES = [
  * medio de la pantalla no hay nada que marcar. Ahí el wordmark se abre letra
  * por letra y ocupa todo; cualquier cosa encima le compite.
  */
-export function IndiceLateral() {
+export function Navegacion() {
 	const [activa, setActiva] = useState<string | null>(null)
 
 	// El índice existe desde que hay una sección numerada en pantalla, y de ahí
@@ -50,6 +50,7 @@ export function IndiceLateral() {
 	// momento no ocurre nunca y el índice no aparecía más.
 	const visible = activa !== null
 	const [abierto, setAbierto] = useState(false)
+	const [subiendo, setSubiendo] = useState(false)
 	const boton = useRef<HTMLButtonElement>(null)
 	const panel = useRef<HTMLDivElement>(null)
 
@@ -74,6 +75,21 @@ export function IndiceLateral() {
 		)
 		nodos.forEach((n) => io.observe(n))
 		return () => io.disconnect()
+	}, [])
+
+	// La barra aparece al scrollear hacia arriba y se va al bajar. El umbral de
+	// seis píxeles descarta el temblor del trackpad y el rebote del scroll
+	// suave, que si no la hacen parpadear.
+	useEffect(() => {
+		let ultimo = window.scrollY
+		const alScrollear = () => {
+			const y = window.scrollY
+			if (Math.abs(y - ultimo) < 6) return
+			setSubiendo(y < ultimo)
+			ultimo = y
+		}
+		window.addEventListener('scroll', alScrollear, { passive: true })
+		return () => window.removeEventListener('scroll', alScrollear)
 	}, [])
 
 	// Mientras el índice está abierto la página no scrollea detrás. Se bloquea
@@ -187,51 +203,57 @@ export function IndiceLateral() {
 					</ul>
 				</div>
 			)}
-			{/* --- desktop: contador que se despliega ------------------------- */}
-			{/* Anclado a la esquina, en el mismo lugar que el botón de mobile.
-			    En reposo es solo el contador; la lista aparece al acercar el mouse
-			    o al tabular hacia adentro — `focus-within` y no `hover` a secas,
-			    porque si no, con teclado se enfocan links invisibles.
-			    `mix-blend-difference` lo invierte solo sobre los bloques claros. */}
-			<div
-				className={`group fixed bottom-0 right-0 z-30 hidden pb-8 pr-8 mix-blend-difference transition-opacity duration-700 lg:block ${
-					visible ? 'opacity-100' : 'pointer-events-none opacity-0'
+			{/* --- desktop: barra superior ------------------------------------ */}
+			{/* Aparece al scrollear hacia arriba, que es cuando alguien está
+			    buscando algo, y no estorba mientras se lee hacia abajo. Nunca
+			    durante el hero: ahí el wordmark ocupa toda la pantalla.
+			    Lleva fondo propio y no `mix-blend-difference` como las versiones
+			    anteriores: son siete links en fila y cruzan la lámina del slider
+			    de servicios, donde la fusión los vuelve ilegibles. */}
+			<header
+				className={`fixed inset-x-0 top-0 z-40 hidden border-b border-hairline bg-surface-primary/90 backdrop-blur-md transition-transform duration-500 lg:block ${
+					visible && subiendo ? 'translate-y-0' : '-translate-y-full'
 				}`}
 			>
-				<nav
-					aria-label="Secciones de la página"
-					className="pointer-events-none absolute bottom-full right-0 mb-5 translate-y-1 pr-8 opacity-0 transition-all duration-300 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100"
-				>
-					<ul className="flex list-none flex-col items-end gap-3">
-						{SECCIONES.map((s) => {
-							const esActiva = s.id === activa
-							return (
-								<li key={s.id}>
-									<a
-										href={`#${s.id}`}
-										aria-current={esActiva ? 'true' : undefined}
-										className={`flex items-center justify-end gap-3 whitespace-nowrap font-mono text-etiqueta-s uppercase text-fg-primary transition-opacity duration-200 hover:opacity-100 focus-visible:opacity-100 ${
-											esActiva ? 'opacity-100' : 'opacity-50'
-										}`}
-									>
-										{s.nombre}
-										<span className="tabular-nums">{s.numero}</span>
-									</a>
-								</li>
-							)
-						})}
-					</ul>
-				</nav>
+				<div className="mx-auto flex h-16 w-full max-w-pagina items-center justify-between gap-10 px-6 md:px-margen">
+					<a
+						href="#"
+						className="font-display text-cuerpo-l tracking-widest text-fg-primary transition-colors hover:text-gold-bright"
+					>
+						ELAÏRA
+					</a>
 
-				<p
-					aria-hidden
-					className="flex items-center gap-2.5 font-mono text-etiqueta tabular-nums text-fg-primary"
-				>
-					<span aria-hidden className="block h-px w-6 bg-fg-primary opacity-50" />
-					{activa ? SECCIONES.find((s) => s.id === activa)?.numero : '01'}
-					<span className="opacity-50">/ {SECCIONES[SECCIONES.length - 1].numero}</span>
-				</p>
-			</div>
+					<nav aria-label="Secciones de la página">
+						<ul className="flex list-none items-center gap-7">
+							{SECCIONES.map((s) => {
+								const esActiva = s.id === activa
+								return (
+									<li key={s.id}>
+										<a
+											href={`#${s.id}`}
+											aria-current={esActiva ? 'true' : undefined}
+											className={`font-mono text-etiqueta-s uppercase transition-colors ${
+												esActiva
+													? 'text-gold-bright'
+													: 'text-fg-secondary hover:text-fg-primary'
+											}`}
+										>
+											{s.corto}
+										</a>
+									</li>
+								)
+							})}
+						</ul>
+					</nav>
+
+					<a
+						href="#contacto"
+						className="flex h-9 shrink-0 items-center border border-gold px-5 font-mono text-etiqueta-s uppercase text-gold-bright transition-colors hover:bg-gold hover:text-surface-primary"
+					>
+						Reservar
+					</a>
+				</div>
+			</header>
 		</>
 	)
 }

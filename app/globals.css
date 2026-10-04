@@ -262,6 +262,10 @@
      nativos y funcionan aunque no cargue el JS. */
 	html {
 		scroll-behavior: smooth;
+		/* Alto de la barra superior: sin esto, al saltar a una sección desde un
+       ancla el título queda tapado por la barra. Acá y no con scroll-mt en
+       cada sección, que habría que repetir siete veces. */
+		scroll-padding-top: 4rem;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
