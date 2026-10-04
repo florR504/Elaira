@@ -21,8 +21,9 @@ const SECCIONES = [
 ]
 
 /**
- * Índice de secciones: riel fijo al borde derecho en desktop, y en mobile un
- * botón que abre el índice a pantalla completa.
+ * Índice de secciones. En desktop es un contador en la esquina inferior
+ * derecha que se despliega en la lista al acercar el mouse; en mobile, un
+ * botón en el mismo lugar que abre el índice a pantalla completa.
  *
  * Resuelve dos cosas a la vez en una página de trece pantallas: llegar a una
  * sección sin recorrerlas todas, y saber cuánto falta — hasta ahora se
@@ -30,9 +31,8 @@ const SECCIONES = [
  *
  * Va en `mix-blend-difference` para cruzar los dos bloques claros —propósito y
  * testimonios— sin tener que detectar sobre qué fondo está: el modo de fusión
- * lo invierte solo. Por eso el color es `fg-primary` y no un gris: la
- * diferencia contra el hueso da un azul oscuro que se lee, y contra el negro
- * devuelve el crema original.
+ * lo invierte solo. Por eso el color es `fg-primary` y no un gris ni el dorado:
+ * la diferencia del dorado contra el hueso da un azul que no es de la paleta.
  *
  * Aparece recién pasado el hero: hasta que una sección numerada no cruza el
  * medio de la pantalla no hay nada que marcar. Ahí el wordmark se abre letra
@@ -187,57 +187,51 @@ export function IndiceLateral() {
 					</ul>
 				</div>
 			)}
-			{/* --- desktop: riel al borde derecho ----------------------------- */}
-			en el contenedor y `auto` en cada link: el índice // cubre una franja alta de la
-			pantalla y si no, se come los clicks y el // arrastre del carrusel que pasa por debajo.
-			<nav
-				aria-label="Secciones de la página"
-				className={`pointer-events-none fixed right-0 top-1/2 z-30 hidden -translate-y-1/2 pr-7 mix-blend-difference transition-opacity duration-700 lg:block ${
-					visible ? 'opacity-100' : 'opacity-0'
+			{/* --- desktop: contador que se despliega ------------------------- */}
+			{/* Anclado a la esquina, en el mismo lugar que el botón de mobile.
+			    En reposo es solo el contador; la lista aparece al acercar el mouse
+			    o al tabular hacia adentro — `focus-within` y no `hover` a secas,
+			    porque si no, con teclado se enfocan links invisibles.
+			    `mix-blend-difference` lo invierte solo sobre los bloques claros. */}
+			<div
+				className={`group fixed bottom-0 right-0 z-30 hidden pb-8 pr-8 mix-blend-difference transition-opacity duration-700 lg:block ${
+					visible ? 'opacity-100' : 'pointer-events-none opacity-0'
 				}`}
 			>
-				<ul className="flex list-none flex-col items-end gap-4">
-					{SECCIONES.map((s) => {
-						const esActiva = s.id === activa
-						return (
-							<li key={s.id}>
-								<a
-									href={`#${s.id}`}
-									aria-current={esActiva ? 'true' : undefined}
-									className="group pointer-events-auto flex items-center justify-end gap-3 py-1 font-mono text-etiqueta-s uppercase text-fg-primary"
-								>
-									<span
-										className={`whitespace-nowrap transition-opacity duration-300 ${
-											esActiva
-												? 'opacity-100'
-												: 'opacity-0 group-hover:opacity-60 group-focus-visible:opacity-100'
+				<nav
+					aria-label="Secciones de la página"
+					className="pointer-events-none absolute bottom-full right-0 mb-5 translate-y-1 pr-8 opacity-0 transition-all duration-300 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100"
+				>
+					<ul className="flex list-none flex-col items-end gap-3">
+						{SECCIONES.map((s) => {
+							const esActiva = s.id === activa
+							return (
+								<li key={s.id}>
+									<a
+										href={`#${s.id}`}
+										aria-current={esActiva ? 'true' : undefined}
+										className={`flex items-center justify-end gap-3 whitespace-nowrap font-mono text-etiqueta-s uppercase text-fg-primary transition-opacity duration-200 hover:opacity-100 focus-visible:opacity-100 ${
+											esActiva ? 'opacity-100' : 'opacity-50'
 										}`}
 									>
 										{s.nombre}
-									</span>
-									<span
-										className={`tabular-nums transition-opacity duration-300 ${
-											esActiva
-												? 'opacity-100'
-												: 'opacity-45 group-hover:opacity-100'
-										}`}
-									>
-										{s.numero}
-									</span>
-									<span
-										aria-hidden
-										className={`block h-px bg-fg-primary transition-all duration-300 ${
-											esActiva
-												? 'w-7 opacity-100'
-												: 'w-3 opacity-45 group-hover:w-5'
-										}`}
-									/>
-								</a>
-							</li>
-						)
-					})}
-				</ul>
-			</nav>
+										<span className="tabular-nums">{s.numero}</span>
+									</a>
+								</li>
+							)
+						})}
+					</ul>
+				</nav>
+
+				<p
+					aria-hidden
+					className="flex items-center gap-2.5 font-mono text-etiqueta tabular-nums text-fg-primary"
+				>
+					<span aria-hidden className="block h-px w-6 bg-fg-primary opacity-50" />
+					{activa ? SECCIONES.find((s) => s.id === activa)?.numero : '01'}
+					<span className="opacity-50">/ {SECCIONES[SECCIONES.length - 1].numero}</span>
+				</p>
+			</div>
 		</>
 	)
 }
