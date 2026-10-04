@@ -257,6 +257,19 @@
 }
 
 @layer base {
+	/* Los anclas del índice lateral saltan con deslizamiento. Va acá y no en el
+     componente porque lo resuelve el navegador: los links son <a href="#id">
+     nativos y funcionan aunque no cargue el JS. */
+	html {
+		scroll-behavior: smooth;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+	}
+
 	body {
 		background-color: var(--color-surface-primary);
 		color: var(--color-fg-primary);
