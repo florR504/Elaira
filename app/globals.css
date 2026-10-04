@@ -218,9 +218,20 @@
 
 	/* Logotipo del hero. Se mide contra el contenedor y contra el alto de la
      ventana a la vez: tiene que cruzar la pantalla de lado a lado sin que las
-     letras se salgan por abajo en una ventana apaisada */
-	--text-wordmark: min(29cqw, 44vh);
+     letras se salgan por abajo en una ventana apaisada.
+     El 28% sale de medir: el ancho que ocupa la palabra es 3.53 veces el
+     cuerpo de la fuente, así que por encima de 28.3cqw deja de entrar en el
+     contenedor. En ventanas anchas y bajas manda el tope de 44vh y el
+     logotipo queda más chico todavía */
+	--text-wordmark: min(28cqw, 44vh);
 	--text-wordmark--line-height: 1;
+
+	/* El mismo logotipo en pantallas angostas. Más chico, y acá sí entero: a
+     113px el sangrado eran cinco píxeles por lado, que no alcanzan a leerse
+     como recorte y parecen un error de medida. Con este tamaño quedan unos
+     treinta píxeles de aire a cada lado */
+	--text-wordmark-s: min(24cqw, 40vh);
+	--text-wordmark-s--line-height: 1;
 
 	/* Apertura de página. Uno por pantalla: si se repite deja de abrir nada */
 	--text-titulo-xl: clamp(2.75rem, 7.2vw, 104px);

@@ -101,7 +101,7 @@ export function Hero() {
 
 				<h1
 					id="hero-title"
-					className="absolute inset-x-0 bottom-[8%] flex select-none justify-center font-display text-wordmark font-normal leading-none tracking-tight text-fg-primary md:bottom-[-10%]"
+					className="absolute inset-x-0 bottom-[8%] flex select-none justify-center font-display text-wordmark-s md:text-wordmark font-normal leading-none tracking-tight text-fg-primary md:bottom-[-10%]"
 				>
 					<span ref={wordmark} className="inline-block whitespace-nowrap">
 						{LETTERS.map((letter, i) => (
