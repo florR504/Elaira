@@ -1,12 +1,11 @@
 /**
- * DATOS DE EJEMPLO. El mail y la dirección vienen del diseño de Pencil y hay
- * que confirmarlos. El Instagram sale del comentario del sistema de diseño, así
- * que ese sí es el real.
+ * DATO DE EJEMPLO. El mail viene del diseño de Pencil y hay que confirmarlo.
+ * El Instagram sale del comentario del sistema de diseño, así que ese sí es
+ * el real.
  */
 const CONTACTO = [
 	{ etiqueta: 'Escribime', valor: 'hola@elaira.mx', href: 'mailto:hola@elaira.mx' },
 	{ etiqueta: 'Instagram', valor: '@elaira.mar', href: 'https://instagram.com/elaira.mar' },
-	{ etiqueta: 'Consultorio', valor: 'Córdoba 212, Roma Sur — CDMX' },
 ]
 
 /** Las mismas siete del índice, en el mismo orden y con la misma numeración. */
