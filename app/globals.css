@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* ============================================================================
    PRIMITIVOS
@@ -7,75 +7,75 @@
    Deliberadamente NO generan utilidades de Tailwind.
    ============================================================================ */
 :root {
-  /* Neutral — negros cálidos con base marrón, no grises puros */
-  --neutral-950: #050404;
-  --neutral-900: #0c0908;
-  --neutral-850: #0f0c0c;
-  --neutral-800: #1f1b1a;
-  --neutral-700: #35302d;
-  --neutral-600: #57514d;
-  --neutral-400: #8e8781;
-  --neutral-200: #c4beb7;
-  --neutral-100: #e3ded7;
-  --neutral-50: #f6f2ec;
+	/* Neutral — negros cálidos con base marrón, no grises puros */
+	--neutral-950: #050404;
+	--neutral-900: #0c0908;
+	--neutral-850: #0f0c0c;
+	--neutral-800: #1f1b1a;
+	--neutral-700: #35302d;
+	--neutral-600: #57514d;
+	--neutral-400: #8e8781;
+	--neutral-200: #c4beb7;
+	--neutral-100: #e3ded7;
+	--neutral-50: #f6f2ec;
 
-  /* Wine — borgoña del feed de @elaira.mar. Funciona como superficie */
-  --wine-100: #e7cfd0;
-  --wine-200: #c98f93;
-  --wine-300: #a85259;
-  --wine-400: #8c2c34;
-  --wine-500: #7a1f26;
-  --wine-600: #601820;
-  --wine-700: #48111a;
-  --wine-900: #290a10;
+	/* Wine — borgoña del feed de @elaira.mar. Funciona como superficie */
+	--wine-100: #e7cfd0;
+	--wine-200: #c98f93;
+	--wine-300: #a85259;
+	--wine-400: #8c2c34;
+	--wine-500: #7a1f26;
+	--wine-600: #601820;
+	--wine-700: #48111a;
+	--wine-900: #290a10;
 
-  /* Gold — acento de jerarquía */
-  --gold-100: #f5e7c2;
-  --gold-200: #ebd08a;
-  --gold-400: #d9b75f;
-  --gold-500: #c9a24b;
-  --gold-700: #97762f;
-  --gold-900: #5c4718;
+	/* Gold — acento de jerarquía */
+	--gold-100: #f5e7c2;
+	--gold-200: #ebd08a;
+	--gold-400: #d9b75f;
+	--gold-500: #c9a24b;
+	--gold-700: #97762f;
+	--gold-900: #5c4718;
 
-  /* Olive — verde del feed. Acento secundario */
-  --olive-100: #e7e6d5;
-  --olive-200: #c9c9a9;
-  --olive-300: #adae83;
-  --olive-400: #9a9c6e;
-  --olive-500: #6e7345;
-  --olive-600: #585c36;
-  --olive-700: #414428;
-  --olive-900: #22240f;
+	/* Olive — verde del feed. Acento secundario */
+	--olive-100: #e7e6d5;
+	--olive-200: #c9c9a9;
+	--olive-300: #adae83;
+	--olive-400: #9a9c6e;
+	--olive-500: #6e7345;
+	--olive-600: #585c36;
+	--olive-700: #414428;
+	--olive-900: #22240f;
 
-  /* Bone — cremas del feed. Habilitan las secciones claras */
-  --bone-50: #f7f1e7;
-  --bone-100: #efe7d9;
-  --bone-200: #e3d8c6;
-  --bone-300: #d3c5ae;
-  --bone-400: #bcab90;
-  --bone-600: #8a7a62;
-  --bone-800: #443a2e;
+	/* Bone — cremas del feed. Habilitan las secciones claras */
+	--bone-50: #f7f1e7;
+	--bone-100: #efe7d9;
+	--bone-200: #e3d8c6;
+	--bone-300: #d3c5ae;
+	--bone-400: #bcab90;
+	--bone-600: #8a7a62;
+	--bone-800: #443a2e;
 
-  /* Red — el rojo pleno de la flor. Uso puntual, nunca en áreas grandes */
-  --red-100: #fbd9da;
-  --red-300: #f26a6a;
-  --red-400: #e5323c;
-  --red-500: #d9121f;
-  --red-700: #8a0a12;
-  --red-900: #4a050a;
+	/* Red — el rojo pleno de la flor. Uso puntual, nunca en áreas grandes */
+	--red-100: #fbd9da;
+	--red-300: #f26a6a;
+	--red-400: #e5323c;
+	--red-500: #d9121f;
+	--red-700: #8a0a12;
+	--red-900: #4a050a;
 
-  /* Teal — vetas del pétalo. USO FOTOGRÁFICO ÚNICAMENTE.
+	/* Teal — vetas del pétalo. USO FOTOGRÁFICO ÚNICAMENTE.
      Retirado de la interfaz: no tiene token semántico a propósito.
      Lo reemplaza accent-olive. Vive acá solo como referencia de color
      para retoque de imagen. */
-  --teal-300: #6fcfc0;
-  --teal-500: #2f9e8e;
-  --teal-700: #1b6459;
-  --teal-900: #0e332d;
+	--teal-300: #6fcfc0;
+	--teal-500: #2f9e8e;
+	--teal-700: #1b6459;
+	--teal-900: #0e332d;
 
-  /* Base — absolutos. Solo overlays, sombras y texto sobre el botón dorado */
-  --base-white: #ffffff;
-  --base-black: #000000;
+	/* Base — absolutos. Solo overlays, sombras y texto sobre el botón dorado */
+	--base-white: #ffffff;
+	--base-black: #000000;
 }
 
 /* ============================================================================
@@ -85,82 +85,277 @@
    bg-surface-wine, text-fg-primary, border-hairline, fill-red, etc.
    ============================================================================ */
 @theme inline {
-  /* --- Superficies ------------------------------------------------------- */
-  /* Fondo por defecto: hero, manifiesto, servicios, footer */
-  --color-surface-primary: var(--neutral-950);
-  /* Secciones oscuras que necesitan despegarse del fondo */
-  --color-surface-raised: var(--neutral-850);
-  /* Borgoña de marca. Hoy sostiene la sección de historia */
-  --color-surface-wine: var(--wine-700);
-  /* Arranque del degradado que calienta la sección de formulario */
-  --color-surface-wine-deep: var(--wine-900);
-  /* Única superficie clara del sitio. Corta el bloque oscuro en testimonios */
-  --color-surface-bone: var(--bone-200);
+	/* --- Superficies ------------------------------------------------------- */
+	/* Fondo por defecto: hero, manifiesto, servicios, footer */
+	--color-surface-primary: var(--neutral-950);
+	/* Secciones oscuras que necesitan despegarse del fondo */
+	--color-surface-raised: var(--neutral-850);
+	/* Borgoña de marca. Hoy sostiene la sección de historia */
+	--color-surface-wine: var(--wine-700);
+	/* Arranque del degradado que calienta la sección de formulario */
+	--color-surface-wine-deep: var(--wine-900);
+	/* Única superficie clara del sitio. Corta el bloque oscuro en testimonios */
+	--color-surface-bone: var(--bone-200);
+	--color-surface-olive: var(--olive-500);
 
-  /* --- Texto sobre superficies oscuras ----------------------------------- */
-  --color-fg-primary: var(--neutral-50);
-  --color-fg-secondary: var(--neutral-400);
-  --color-fg-muted: var(--neutral-600);
+	/* --- Texto sobre superficies oscuras ----------------------------------- */
+	--color-fg-primary: var(--neutral-50);
+	--color-fg-secondary: var(--neutral-400);
+	--color-fg-muted: var(--neutral-600);
 
-  /* --- Texto sobre superficies claras / borgoña -------------------------- */
-  --color-fg-on-bone: var(--neutral-950);
-  /* Marrón cálido, nunca gris: el gris ensucia el hueso */
-  --color-fg-on-bone-soft: var(--bone-800);
-  /* fg-muted no tiene contraste suficiente contra el wine */
-  --color-fg-on-wine-soft: var(--bone-400);
+	/* --- Texto sobre superficies claras / borgoña -------------------------- */
+	--color-fg-on-bone: var(--neutral-950);
+	/* Marrón cálido, nunca gris: el gris ensucia el hueso */
+	--color-fg-on-bone-soft: var(--bone-800);
+	/* fg-muted no tiene contraste suficiente contra el wine */
+	--color-fg-on-wine-soft: var(--bone-400);
 
-  /* --- Acentos ----------------------------------------------------------- */
-  /* Relleno del CTA principal, eyebrows y bordes de acento */
-  --color-gold: var(--gold-500);
-  /* Dorado sobre negro cuando hace falta contraste: precios, itálicas, email */
-  --color-gold-bright: var(--gold-200);
-  /* Acento sobre crema: eyebrows y atribuciones de la sección clara */
-  --color-accent-olive: var(--olive-500);
-  /* Acento sobre negro: numeración de servicios. Le saca trabajo al dorado */
-  --color-accent-olive-light: var(--olive-400);
-  /* Identidad: el punto del logotipo. Solo puntual */
-  --color-red: var(--red-500);
-  /* Halos radiales detrás de la flor */
-  --color-red-deep: var(--red-700);
+	/* --- Acentos ----------------------------------------------------------- */
+	/* Relleno del CTA principal, eyebrows y bordes de acento */
+	--color-gold: var(--gold-500);
+	/* Dorado sobre negro cuando hace falta contraste: precios, itálicas, email */
+	--color-gold-bright: var(--gold-200);
+	/* Acento sobre crema: eyebrows y atribuciones de la sección clara */
+	--color-accent-olive: var(--olive-500);
+	/* Acento sobre negro: numeración de servicios. Le saca trabajo al dorado */
+	--color-accent-olive-light: var(--olive-400);
+	/* Identidad: el punto del logotipo. Solo puntual */
+	--color-red: var(--red-500);
+	/* Halos radiales detrás de la flor */
+	--color-red-deep: var(--red-700);
 
-  /* --- Divisores de 1px --------------------------------------------------- */
-  --color-hairline: var(--neutral-800);
-  /* El hairline neutro desaparece contra el borgoña */
-  --color-hairline-wine: var(--wine-500);
-  --color-hairline-bone: var(--bone-300);
+	/* --- Divisores de 1px --------------------------------------------------- */
+	--color-hairline: var(--neutral-800);
+	/* El hairline neutro desaparece contra el borgoña */
+	--color-hairline-wine: var(--wine-500);
+	--color-hairline-bone: var(--bone-300);
 
-  /* --- Tipografía --------------------------------------------------------- */
-  /* Destacados: logotipo, wordmark del hero y footer. Es la didone del logo,
+	/* --- Tipografía --------------------------------------------------------- */
+	/* Destacados: logotipo, wordmark del hero y footer. Es la didone del logo,
      con eje óptico activo — a 200px+ las serifas se afinan solas.
      Uso restringido: si se derrama a titulares comunes pierde el efecto. */
-  --font-display: var(--font-bodoni), "Bodoni Moda", Didot, Georgia, serif;
-  /* Titulares de sección y citas */
-  --font-heading: var(--font-playfair), "Playfair Display", Georgia, serif;
-  /* Cuerpo de texto */
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  /* Labels, eyebrows, metadatos y precios */
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+	--font-display: var(--font-bodoni), 'Bodoni Moda', Didot, Georgia, serif;
+	/* Titulares de sección y citas */
+	--font-heading: var(--font-playfair), 'Playfair Display', Georgia, serif;
+	/* Cuerpo de texto */
+	--font-sans: var(--font-geist-sans), system-ui, sans-serif;
+	/* Labels, eyebrows, metadatos y precios */
+	--font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+	/* --- Escala de etiquetas ------------------------------------------------ */
+	/* Eyebrows, metadatos, precios y botones: todo lo que va en la mono y en
+     versalita. Cada escalón viaja con su tracking, que a este cuerpo no es un
+     ajuste sino parte del tamaño: sin la caja abierta, 10px en versalita se
+     lee como una mancha. */
+
+	/* Numeración de secciones, labels de formulario, CTA */
+	--text-etiqueta: 11px;
+	--text-etiqueta--line-height: 1.4;
+	--text-etiqueta--letter-spacing: 0.18em;
+
+	/* Contadores y atribuciones: el escalón que necesita leerse de lejos */
+	--text-etiqueta-l: 12px;
+	--text-etiqueta-l--line-height: 1.4;
+	--text-etiqueta-l--letter-spacing: 0.18em;
+
+	/* Pies de foto y de carta */
+	--text-etiqueta-s: 10px;
+	--text-etiqueta-s--line-height: 1.4;
+	--text-etiqueta-s--letter-spacing: 0.18em;
+
+	/* --- Escala de cuerpo ---------------------------------------------------- */
+	/* Cuatro escalones con su interlineado. Fijos y no fluidos a propósito: el
+     cuerpo no tiene que cambiar de tamaño con la ventana —la medida de lectura
+     la da el ancho de la columna— y varios de estos textos viven adentro de
+     piezas de tamaño fijo, como las cartas del mazo. */
+
+	/* Lo que más se repite: párrafos de sección y descripciones */
+	--text-cuerpo: 15px;
+	--text-cuerpo--line-height: 1.65;
+
+	/* Metadatos largos y notas al pie */
+	--text-cuerpo-s: 13px;
+	--text-cuerpo-s--line-height: 1.6;
+
+	/* Párrafo protagonista: el que abre un capítulo o describe un servicio */
+	--text-cuerpo-l: 17px;
+	--text-cuerpo-l--line-height: 1.7;
+
+	/* Respuestas del mazo y textos que se leen solos en pantalla */
+	--text-cuerpo-xl: 19px;
+	--text-cuerpo-xl--line-height: 1.6;
+
+	/* --- Tracking suelto ----------------------------------------------------- */
+	/* El resto del tracking viaja con su escalón de texto. Este va aparte porque
+     es una sola pieza: el "DESLIZÁ" del hero, donde la caja exagerada es el
+     efecto, no la legibilidad */
+	--tracking-cue: 0.34em;
+
+	/* --- Medidas de página --------------------------------------------------- */
+	/* Ancho máximo del contenido. Arriba de esto la página no crece: crecen los
+     márgenes */
+	--container-pagina: 1440px;
+
+	/* Margen lateral del contenido. En porcentaje y no en px: es el que hace que
+     el texto respire igual a 1024 que a 1440 */
+	--spacing-margen: 11%;
+	/* Margen de los eyebrows, que siguen el borde de la sección y no la columna
+     de texto */
+	--spacing-borde: 60px;
+	/* Aire vertical entre secciones. El corto es para los bloques que ya traen
+     su propio fondo y no necesitan el respiro completo */
+	--spacing-seccion: 180px;
+	--spacing-seccion-s: 110px;
+
+	/* --- Escala de titulares ------------------------------------------------ */
+	/* Seis escalones fluidos, de la apertura de página al pie de un bloque.
+     Cada uno viaja con su interlineado y su tracking: en una didone, esos dos
+     valores son parte del tamaño, no una decisión aparte — el tracking que
+     hace respirar un titular de 104px abre demasiado uno de 26. Tailwind los
+     aplica junto con el font-size, así que `text-titulo-l` alcanza y los
+     componentes dejan de repetir `leading-[…] tracking-[…]`.
+     Para salirse de la escala, `leading-*` en la clase sigue ganando. */
+
+	/* Logotipo del hero. Se mide contra el contenedor y contra el alto de la
+     ventana a la vez: tiene que cruzar la pantalla de lado a lado sin que las
+     letras se salgan por abajo en una ventana apaisada.
+     El 28% sale de medir: el ancho que ocupa la palabra es 3.53 veces el
+     cuerpo de la fuente, así que por encima de 28.3cqw deja de entrar en el
+     contenedor. En ventanas anchas y bajas manda el tope de 44vh y el
+     logotipo queda más chico todavía */
+	--text-wordmark: min(28cqw, 44vh);
+	--text-wordmark--line-height: 1;
+
+	/* El mismo logotipo en pantallas angostas. Más chico, y acá sí entero: a
+     113px el sangrado eran cinco píxeles por lado, que no alcanzan a leerse
+     como recorte y parecen un error de medida. Con este tamaño quedan unos
+     treinta píxeles de aire a cada lado */
+	--text-wordmark-s: min(24cqw, 40vh);
+	--text-wordmark-s--line-height: 1;
+
+	/* Apertura de página. Uno por pantalla: si se repite deja de abrir nada */
+	--text-titulo-xl: clamp(2.75rem, 7.2vw, 104px);
+	--text-titulo-xl--line-height: 1.05;
+	--text-titulo-xl--letter-spacing: -0.019em;
+
+	/* Titular de sección */
+	--text-titulo-l: clamp(2.5rem, 6vw, 88px);
+	--text-titulo-l--line-height: 1.05;
+	--text-titulo-l--letter-spacing: -0.028em;
+
+	/* Titular de pieza adentro de una sección: el nombre de un servicio, el
+     encabezado de un capítulo */
+	--text-titulo-m: clamp(2.5rem, 5.6vw, 80px);
+	--text-titulo-m--line-height: 1.03;
+	--text-titulo-m--letter-spacing: -0.026em;
+
+	/* Titular secundario y citas: pesa menos que el de la sección pero sigue
+     leyéndose como titular */
+	--text-titulo-s: clamp(2rem, 4vw, 56px);
+	--text-titulo-s--line-height: 1.15;
+	--text-titulo-s--letter-spacing: -0.02em;
+
+	/* Subtítulo: encabeza un bloque, no una sección */
+	--text-titulo-xs: clamp(1.75rem, 2.4vw, 34px);
+	--text-titulo-xs--line-height: 1.2;
+	--text-titulo-xs--letter-spacing: -0.02em;
+
+	/* Bajada: cuerpo en la tipografía de titular. Interlineado de lectura,
+     sin tracking negativo, que a este cuerpo cierra las letras de más */
+	--text-titulo-2xs: clamp(1.125rem, 1.6vw, 22px);
+	--text-titulo-2xs--line-height: 1.5;
+	--text-titulo-2xs--letter-spacing: 0em;
 }
 
 @layer base {
-  /* `clip` y no `hidden`: recorta la sangría horizontal del logotipo sin
-     crear un contenedor de scroll, así el overflow vertical sigue siendo
-     visible y las letras del hero pueden continuar sobre la sección
-     siguiente en vez de cortarse contra el borde.
-     Va en `html` y no en `body`: desde el body la propagación al viewport no
-     se aplica y la página igual scrollea en horizontal. */
-  html {
-    overflow-x: clip;
-  }
+	/* Los anclas del índice lateral saltan con deslizamiento. Va acá y no en el
+     componente porque lo resuelve el navegador: los links son <a href="#id">
+     nativos y funcionan aunque no cargue el JS. */
+	html {
+		scroll-behavior: smooth;
+		/* Alto de la barra superior: sin esto, al saltar a una sección desde un
+       ancla el título queda tapado por la barra. Acá y no con scroll-mt en
+       cada sección, que habría que repetir siete veces. */
+		scroll-padding-top: 4rem;
+	}
 
-  body {
-    background-color: var(--color-surface-primary);
-    color: var(--color-fg-primary);
-    font-family: var(--font-sans);
-  }
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+	}
 
-  ::selection {
-    background-color: var(--wine-500);
-    color: var(--neutral-50);
-  }
+	body {
+		background-color: var(--color-surface-primary);
+		color: var(--color-fg-primary);
+		font-family: var(--font-sans);
+	}
+
+	::selection {
+		background-color: var(--wine-500);
+		color: var(--neutral-50);
+	}
+}
+
+/* Líneas de SplitText en TextoEnmascarado. La máscara recorta al alto exacto
+   de la línea y en una serif itálica eso se come las colas de la "g" y de la
+   "y"; el padding las devuelve y el margen negativo se lleva el alto que
+   agregó, así el interlineado no cambia. */
+.linea-enmascarada {
+	padding-bottom: 0.14em;
+	margin-bottom: -0.14em;
+}
+
+/* Máscara de la lámina de fondo del slider de servicios: desvanece el borde del
+   archivo contra el negro de la sección.
+
+   Vive acá y no en una clase de Tailwind porque cambia por breakpoint, y el
+   estilo inline —que es donde estaba— no admite media queries.
+
+   En mobile solo desvanece arriba y abajo. El fundido horizontal existía para
+   que la lámina no cortara en seco contra los costados, pero a 390px ese 6% son
+   23px de imagen apagándose a cada lado: en vez de un borde suave se lee como
+   dos bandas negras que encogen la foto. En desktop, con 1440px de ancho, el
+   mismo 6% son 86px y ahí sí funciona como fundido. */
+.mascara-lamina {
+	-webkit-mask-image: linear-gradient(
+		to bottom,
+		transparent 0,
+		#000 8%,
+		#000 92%,
+		transparent 100%
+	);
+	mask-image: linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+
+@media (min-width: 768px) {
+	.mascara-lamina {
+		-webkit-mask-image:
+			linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%),
+			linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+		mask-image:
+			linear-gradient(to bottom, transparent 0, #000 8%, #000 92%, transparent 100%),
+			linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+		-webkit-mask-composite: source-in;
+		mask-composite: intersect;
+	}
+}
+
+/* Velo del slider de servicios en desktop: oscurece el centro, donde va el
+   texto, y deja respirar la lámina hacia los bordes. Vive acá y no en una clase
+   de Tailwind para poder construirlo con el token de superficie en vez de
+   repetir el rgba del negro. */
+.velo-lamina {
+	background-image: radial-gradient(
+		ellipse at center,
+		color-mix(in srgb, var(--color-surface-primary) 90%, transparent) 0%,
+		color-mix(in srgb, var(--color-surface-primary) 82%, transparent) 28%,
+		color-mix(in srgb, var(--color-surface-primary) 50%, transparent) 62%,
+		color-mix(in srgb, var(--color-surface-primary) 10%, transparent) 100%
+	);
+}
+
+/* Halo de las estrellas del cursor, con el dorado del sistema. */
+.brillo-estrella {
+	filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-gold-bright) 50%, transparent));
 }

@@ -41,13 +41,7 @@ type Props = {
  * con movimiento reducido salimos antes de tocar nada, así nunca queda algo
  * invisible esperando un observer que no va a llegar.
  */
-export function Reveal({
-	children,
-	className,
-	style,
-	as: Tag = 'div',
-	stagger = 0.08,
-}: Props) {
+export function Reveal({ children, className, style, as: Tag = 'div', stagger = 0.08 }: Props) {
 	const ref = useRef<HTMLElement>(null)
 
 	useIsoLayoutEffect(() => {

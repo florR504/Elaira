@@ -71,7 +71,12 @@ export function Hero() {
 			aria-labelledby="hero-title"
 			className="relative h-screen w-full bg-surface-primary"
 		>
-			<div className="@container relative mx-auto h-full w-full max-w-[1440px]">
+			{/* clip y no hidden: `hidden` crearía un contenedor de scroll y mataría el pin.
+			    sin crear contenedor de scroll, así el desborde vertical sigue
+			    visible y las letras continúan sobre la sección siguiente. Va acá
+			    y no en html: en el elemento raíz la propagación al viewport no
+			    frena el scroll horizontal. */}
+			<div className="@container relative mx-auto h-full w-full max-w-pagina overflow-x-clip">
 				<div className="absolute inset-x-0 top-[-9%] mx-auto aspect-[1200/2135] h-[78%] md:top-[-26%] md:h-[112%]">
 					<Image
 						src="/flor-elaira.jpg"
@@ -85,7 +90,7 @@ export function Hero() {
 					/>
 					<Image
 						src="/flor-elaira.jpg"
-						alt="Flor roja de pétalos rasgados sobre fondo negro, imagen de marca de Elaira"
+						alt="Flor roja de pétalos rasgados sobre fondo negro, imagen de marca de Elaïra"
 						width={1200}
 						height={2135}
 						priority
@@ -96,7 +101,7 @@ export function Hero() {
 
 				<h1
 					id="hero-title"
-					className="absolute inset-x-0 bottom-[8%] flex select-none justify-center font-display text-[min(29cqw,44vh)] font-normal leading-none tracking-[0.015em] text-fg-primary md:bottom-[-10%]"
+					className="absolute inset-x-0 bottom-[8%] flex select-none justify-center font-display text-wordmark-s md:text-wordmark font-normal leading-none tracking-tight text-fg-primary md:bottom-[-10%]"
 				>
 					<span ref={wordmark} className="inline-block whitespace-nowrap">
 						{LETTERS.map((letter, i) => (
@@ -107,9 +112,9 @@ export function Hero() {
 					</span>
 				</h1>
 
-				<div className="cue absolute bottom-[1.8rem] left-1/2 grid -translate-x-1/2 justify-items-center gap-[0.7rem] motion-reduce:hidden">
+				<div className="cue absolute bottom-7 left-1/2 grid -translate-x-1/2 justify-items-center gap-3 motion-reduce:hidden">
 					<span className="h-[34px] w-px bg-gradient-to-b from-red to-transparent" />
-					<span className="text-[0.6rem] font-light uppercase tracking-[0.34em] text-fg-primary/40">
+					<span className="text-etiqueta-s font-light uppercase tracking-cue text-fg-primary/40">
 						deslizá
 					</span>
 				</div>

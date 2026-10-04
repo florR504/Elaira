@@ -23,7 +23,7 @@ const OVERSCAN = 0.3
  * que dividir por (1 + OVERSCAN) para que el recorrido en píxeles sea
  * exactamente la mitad del sobrante y la ventana nunca quede descubierta.
  */
-const TRAVEL = ((OVERSCAN / 2) / (1 + OVERSCAN)) * 100
+const TRAVEL = (OVERSCAN / 2 / (1 + OVERSCAN)) * 100
 
 type Props = {
 	src: string

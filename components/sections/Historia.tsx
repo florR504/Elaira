@@ -4,7 +4,7 @@ import { Reveal } from '@/components/UI/Reveal'
 const PHOTOS = [
 	{
 		src: '/Elaira.jpeg',
-		alt: 'Elaira leyendo cartas sobre una mesa a la luz de una vela',
+		alt: 'Elaïra leyendo cartas sobre una mesa a la luz de una vela',
 		width: 768,
 		height: 1376,
 		size: 'h-[430px] md:h-[700px]',
@@ -32,7 +32,7 @@ const PHOTOS = [
 	},
 	{
 		src: '/Elaira_2.jpeg',
-		alt: 'Elaira junto a una ventana en una habitación en penumbra',
+		alt: 'Elaïra junto a una ventana en una habitación en penumbra',
 		width: 768,
 		height: 1376,
 		size: 'h-[440px] md:h-[720px]',
@@ -44,59 +44,54 @@ const CHAPTERS = [
 		label: '01 — EL ORIGEN',
 		title: 'Siempre estuvo ahí',
 		lead: 'De chica, nunca imaginé que terminaría leyendo las estrellas para vivir. Pero mirando hacia atrás, las señales siempre estuvieron ahí.',
-		close: 'Mi casa 10 en Acuario ya sabía lo que mi mente consciente tardaria años en entender - que mi camino no iba a parecerse al de nadie.',
+		close: 'Mi casa 10 en Acuario ya sabía lo que mi mente consciente tardaría años en entender - que mi camino no iba a parecerse al de nadie.',
 	},
 	{
 		label: '02 — EL ENCUENTRO',
 		title: 'La desconexión',
 		lead: 'Antes del 2020, vivía con ansiedad crónica. No sabía por qué sentía todo tan intensamente. Todo me parecía demasiado bello y doloroso a la vez.',
-		close: 'Viví con esa tensión durante años, como si algo enorme esperara debajo de la superficie listo para emerger pero sin permiso para hacerlo',
+		close: 'Viví con esa tensión durante años, como si algo enorme esperara debajo de la superficie listo para emerger pero sin permiso para hacerlo.',
 	},
 	{
 		label: '03 — EL RENACIMIENTO',
 		title: 'El despertar espiritual',
 		lead: 'En el 2020 todo se quebró. Un amor imposible me desgarró el ego y derrumbó todo lo que creía saber de mi misma. Fue una muerte del ego en tiempo real. Pero de las cenizas emergió algo que no esperaba: un despertar espiritual que desbloqueó dones que no sabía que tenía',
-		close: 'Clariaudiencia. Intuición amplificada. Una percepción de la realidad de la que ya no podía volver atrás. No lo elegí, me eligió a mí',
+		close: 'Clariaudiencia. Intuición amplificada. Una percepción de la realidad de la que ya no podía volver atrás. No lo elegí, me eligió a mí.',
 	},
 	{
 		label: '04 — LA VIDA',
 		title: 'Sentir',
-		lead: 'Siento todo al cien por ciento. Sin filtro, sin volumen bajo. Puedo sentir un asombro inmenso, una alegría profunda y un amor incondicional. Pero también una tristeza que ma atraviesa, miedo o incluso desesperación.',
-		close: 'Pero me hipersensibilidad no es un defecto. Es una forma de estar viva.',
+		lead: 'Siento todo al cien por ciento. Sin filtro, sin volumen bajo. Puedo sentir un asombro inmenso, una alegría profunda y un amor incondicional. Pero también una tristeza que me atraviesa, miedo o incluso desesperación.',
+		close: 'Pero mi hipersensibilidad no es un defecto. Es una forma de estar viva.',
 	},
 	{
 		label: '05 — EL PROPÓSITO',
 		title: 'ELAÏRA',
-		lead: 'Un día, en clariaudiencia escuché un nombre: Elaïra. Más tarde descubrí que es una luna que orbita alrededor de Júpiter, el planeta que domina mi carta natal. No fue una coincidencia, fue un reconocimiento.',
-		close: 'Elaïra es la firma vibratoria de mi alma. Y hoy, esa firma tiene un propósito: ayudarte a encontrar la tuya',
+		lead: 'Un día, en clariaudiencia, escuché un nombre: Elaïra. Más tarde descubrí que es una luna que orbita alrededor de Júpiter, el planeta que domina mi carta natal. No fue una coincidencia, fue un reconocimiento.',
+		close: 'Elaïra es la firma vibratoria de mi alma. Y hoy, esa firma tiene un propósito: ayudarte a encontrar la tuya.',
 		closeHighlighted: true,
+		// Solo el último capítulo lo lleva: es el que cierra prometiendo "ayudarte
+		// a encontrar la tuya", y hasta acá el relato no llevaba a ningún lado.
+		cta: 'Ver los servicios',
 	},
 ]
 
 /**
- * Historia — dos columnas en desktop: pila de fotos a la izquierda, relato en
- * capítulos a la derecha. En mobile colapsa a una sola columna con foto y
- * capítulo alternados.
+ * Historia — fotos a la izquierda y capítulos a la derecha en desktop; en
+ * mobile, una columna con foto y capítulo alternados.
  *
- * Es un solo DOM para las dos disposiciones. Los contenedores de cada columna
- * son `display:contents` en mobile —sus hijos pasan a ser items directos de la
- * grilla— y `flex` de md para arriba. El intercalado en mobile lo resuelve
- * `order`, con valores que quedan crecientes dentro de cada columna, así en
- * desktop no hay que resetear nada. La alternativa era renderizar dos veces y
- * duplicar la descarga de las cinco fotos.
- *
- * `justify-between` en la columna de texto reparte los capítulos a lo largo del
- * alto de la columna de fotos. En el diseño de Pencil eso está resuelto con un
- * gap fijo de 268px calculado a mano; acá sale solo y sobrevive a que cambien
- * las alturas de las fotos.
+ * Un solo DOM para las dos disposiciones: las columnas son `display:contents`
+ * en mobile —sus hijos pasan a ser items de la grilla— y el intercalado lo
+ * resuelve `order`. Tocar cualquiera de los dos rompe el orden en mobile.
  */
 export function Historia() {
 	return (
 		<section
 			id="historia"
 			aria-labelledby="historia-title"
-			className="mx-auto w-full max-w-[1440px] px-6 py-20 md:px-[60px] md:py-[48px]"
+			className="mx-auto w-full max-w-pagina px-6 pb-28 pt-20 md:px-borde md:pb-seccion md:pt-12"
 		>
+			<p className="font-mono text-etiqueta uppercase text-gold mb-6">(01) — Mi Historia</p>
 			<div className="grid grid-cols-1 gap-y-12 md:grid-cols-[560px_1fr] md:gap-x-24 md:gap-y-0">
 				<div className="contents md:flex md:flex-col md:gap-6">
 					{PHOTOS.map((photo, i) => (
@@ -117,14 +112,14 @@ export function Historia() {
 					<Reveal style={{ order: 0 }} className="md:max-w-[540px]">
 						<h2
 							id="historia-title"
-							className="font-heading text-[clamp(3.25rem,5.5vw,80px)] font-normal bg-surface-wine leading-none  tracking-[-0.025em] text-fg-primary"
+							className="font-heading text-titulo-m font-normal bg-surface-wine text-fg-primary"
 						>
 							Mi alma
 						</h2>
-						<p className="mt-5 text-[16px] leading-[1.6] text-fg-secondary">
-							Hace un tiempo, una voz en clariaudiencia me susurro un nombre: ELAIRA.
+						<p className="mt-5 text-cuerpo-l text-fg-secondary">
+							Hace un tiempo, una voz en clariaudiencia me susurró un nombre: Elaïra.
 							Más tarde descubrí que este nombre designa a una luna que gravita en una
-							órbita sagrada alrededor de Júpiter
+							órbita sagrada alrededor de Júpiter.
 						</p>
 					</Reveal>
 
@@ -135,17 +130,15 @@ export function Historia() {
 							style={{ order: 2 + i * 2 }}
 							className="border-t border-hairline pt-6 md:max-w-[540px] md:pr-8"
 						>
-							<p className="font-mono text-[10px] uppercase tracking-[0.18em] text-gold">
+							<p className="font-mono text-etiqueta-s uppercase text-gold">
 								{chapter.label}
 							</p>
-							<h3 className="mt-5 font-heading  bg-surface-wine text-[clamp(2rem,2.5vw,36px)] font-normal leading-[1.15] tracking-[-0.02em] text-fg-primary">
+							<h3 className="mt-5 font-heading bg-surface-wine text-titulo-xs font-normal text-fg-primary">
 								{chapter.title}
 							</h3>
-							<p className="mt-5 text-[15px] leading-[1.75] text-fg-primary">
-								{chapter.lead}
-							</p>
+							<p className="mt-5 text-cuerpo text-fg-primary">{chapter.lead}</p>
 							<p
-								className={`mt-5 text-[15px] leading-[1.75] ${
+								className={`mt-5 text-cuerpo ${
 									chapter.closeHighlighted
 										? 'italic text-gold-bright'
 										: 'text-fg-secondary'
@@ -153,6 +146,15 @@ export function Historia() {
 							>
 								{chapter.close}
 							</p>
+							{chapter.cta && (
+								<a
+									href="#servicios"
+									className="mt-7 inline-flex items-center gap-2.5 border-b border-gold pb-2 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:text-gold"
+								>
+									{chapter.cta}
+									<span aria-hidden>↗</span>
+								</a>
+							)}
 						</Reveal>
 					))}
 				</div>
