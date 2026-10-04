@@ -25,6 +25,33 @@ const LADO_MAX = 680
  *  alto. En desktop va al costado y el disco se queda con toda la ventana. */
 const RESERVADO = 280
 
+/** Mes sinódico: lo que tarda la Luna en volver a la misma fase. */
+const SINODICO = 29.530588853
+
+/** Una luna nueva de referencia, en UTC. A partir de ella se cuenta todo. */
+const LUNA_NUEVA = Date.UTC(2000, 0, 6, 18, 14)
+
+/**
+ * Fracción del ciclo transcurrida desde la luna nueva, de 0 a 1: 0 es nueva y
+ * 0.5 es llena.
+ *
+ * Usa el mes sinódico medio. La duración real de cada lunación varía unas
+ * horas, así que sobre décadas el resultado puede correrse medio día — nada,
+ * teniendo en cuenta que cada una de las ocho fases dura casi cuatro.
+ */
+function fraccionDelCiclo(fecha: Date) {
+	const dias = (fecha.getTime() - LUNA_NUEVA) / 86_400_000
+	return (((dias / SINODICO) % 1) + 1) % 1
+}
+
+/**
+ * Fotograma que le corresponde a una fecha. El 0 es luna llena y el 24 luna
+ * nueva, así que hay que correr media vuelta el origen del cálculo.
+ */
+function cuadroDeLaFecha(fecha: Date) {
+	return Math.round(fraccionDelCiclo(fecha) * TOTAL + TOTAL / 2) % TOTAL
+}
+
 export type FaseLunar = {
 	/** Fracción iluminada a la que corresponde, de 0 a 1. */
 	nombre: string
@@ -80,6 +107,8 @@ export function SecuenciaLunar({ fases }: Props) {
 
 	const [fase, setFase] = useState(0)
 	const [iluminada, setIluminada] = useState(100)
+	const [fijada, setFijada] = useState<Date | null>(null)
+	const saltarA = useRef<((cuadro: number) => void) | null>(null)
 	const reducido = useMovimientoReducido()
 
 	// Dibuja el fotograma actual y deriva de él los textos. La fracción
@@ -88,6 +117,7 @@ export function SecuenciaLunar({ fases }: Props) {
 	useEffect(() => {
 		const canvas = lienzo.current
 		const ctx = canvas?.getContext('2d')
+		const estado = cuadro.current
 		if (!canvas || !ctx) return
 
 		const medir = () => {
@@ -107,14 +137,17 @@ export function SecuenciaLunar({ fases }: Props) {
 		}
 
 		const pintar = () => {
-			const i = cuadro.current.i
+			const i = estado.i
 			const img = imagenes.current[i]
 			ctx.clearRect(0, 0, lado.current, lado.current)
 			if (img) ctx.drawImage(img, 0, 0, lado.current, lado.current)
 
 			const k = (1 - Math.cos(2 * Math.PI * (i / TOTAL) + Math.PI)) / 2
 			setIluminada(Math.round(k * 100))
-			setFase(Math.round((i / ULTIMO) * (fases.length - 1)))
+			// Sobre el ciclo entero y no sobre el tramo que recorre el scroll:
+			// así la misma cuenta sirve para el recorrido y para una fecha, que
+			// puede caer en la mitad creciente.
+			setFase(Math.round((i / TOTAL) * fases.length) % fases.length)
 		}
 
 		// El primero entra aparte para que haya luna desde el principio; el
@@ -124,7 +157,7 @@ export function SecuenciaLunar({ fases }: Props) {
 			const img = new Image()
 			img.onload = () => {
 				imagenes.current[i] = img
-				if (cuadro.current.i === i) pintar()
+				if (estado.i === i) pintar()
 			}
 			img.src = RUTA(i)
 		}
@@ -138,7 +171,7 @@ export function SecuenciaLunar({ fases }: Props) {
 			([e]) => {
 				if (!e.isIntersecting) return
 				io.disconnect()
-				for (let i = 1; i <= ULTIMO; i++) cargar(i)
+				for (let i = 1; i < TOTAL; i++) cargar(i)
 			},
 			{ rootMargin: '100% 0px' }
 		)
@@ -152,7 +185,7 @@ export function SecuenciaLunar({ fases }: Props) {
 
 		// `snap` porque los fotogramas son discretos: sin él, el índice llega
 		// fraccionado y el redondeo lo hace saltar de a dos en los bordes.
-		const animacion = gsap.to(cuadro.current, {
+		const animacion = gsap.to(estado, {
 			i: ULTIMO,
 			snap: 'i',
 			ease: 'none',
@@ -165,15 +198,43 @@ export function SecuenciaLunar({ fases }: Props) {
 			onUpdate: pintar,
 		})
 
+		// Saltar a un fotograma concreto: lo usa el buscador de fecha. Apaga el
+		// ScrollTrigger porque si no el siguiente movimiento de scroll le devuelve
+		// la luna al recorrido y le borra el resultado a quien acaba de buscarlo.
+		saltarA.current = (destino: number) => {
+			animacion.scrollTrigger?.disable(false)
+			gsap.to(estado, {
+				i: destino,
+				duration: 1.1,
+				ease: 'power2.inOut',
+				onUpdate: pintar,
+			})
+		}
+
 		return () => {
 			window.removeEventListener('resize', medir)
 			io.disconnect()
+			saltarA.current = null
+			gsap.killTweensOf(estado)
 			animacion.scrollTrigger?.kill()
 			animacion.kill()
 		}
 	}, [fases.length, reducido])
 
 	const actual = fases[fase]
+
+	const buscar = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault()
+		const valor = new FormData(e.currentTarget).get('fecha')
+		if (typeof valor !== 'string' || !valor) return
+		// En UTC y no en hora local: `new Date('2004-07-12')` ya se interpreta
+		// como medianoche UTC, y mezclarlo con la hora local corre la cuenta un
+		// día en husos al oeste de Greenwich.
+		const fecha = new Date(`${valor}T00:00:00Z`)
+		if (Number.isNaN(fecha.getTime())) return
+		setFijada(fecha)
+		saltarA.current?.(cuadroDeLaFecha(fecha))
+	}
 
 	return (
 		// El alto es lo que le da recorrido al scroll: la luna se queda pegada
@@ -213,6 +274,65 @@ export function SecuenciaLunar({ fases }: Props) {
 					<p className="order-3 min-h-[5.5rem] max-w-[34rem] text-center text-cuerpo text-fg-secondary md:order-none md:min-h-0 md:max-w-none md:text-left">
 						{actual.descripcion}
 					</p>
+
+					{/* El buscador es lo que cierra la sección: hasta acá el recorrido
+					    levanta la pregunta "¿cuál es la mía?" y no la contesta. Al
+					    enviar una fecha la luna viaja hasta esa fase y el llamado a
+					    reservar cae justo donde el interés está más alto. */}
+					<div className="order-4 w-full max-w-[34rem] border-t border-hairline pt-7 md:order-none md:max-w-none">
+						<form onSubmit={buscar} className="flex flex-wrap items-end gap-4">
+							<div className="flex flex-1 flex-col gap-2">
+								<label
+									htmlFor="fecha-nacimiento"
+									className="font-mono text-etiqueta uppercase text-fg-muted"
+								>
+									¿Cuál es la tuya?
+								</label>
+								<input
+									id="fecha-nacimiento"
+									name="fecha"
+									type="date"
+									required
+									max={new Date().toISOString().slice(0, 10)}
+									className="w-full border border-hairline bg-surface-raised px-4 py-3 text-cuerpo text-fg-primary outline-none transition-colors focus:border-gold"
+								/>
+							</div>
+							<button
+								type="submit"
+								className="h-[50px] shrink-0 border border-gold px-6 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:bg-gold hover:text-surface-primary"
+							>
+								Ver mi fase
+							</button>
+						</form>
+
+						{fijada && (
+							<p aria-live="polite" className="mt-5 text-cuerpo-s text-fg-secondary">
+								El{' '}
+								{fijada.toLocaleDateString('es-AR', {
+									day: 'numeric',
+									month: 'long',
+									year: 'numeric',
+									timeZone: 'UTC',
+								})}{' '}
+								la Luna estaba en{' '}
+								<span className="text-gold-bright">
+									{actual.nombre.toLowerCase()}
+								</span>
+								.
+							</p>
+						)}
+
+						<p className="mt-7 text-cuerpo text-fg-primary">
+							Tu fase lunar es un dato. Tu carta natal son cientos.
+						</p>
+						<a
+							href="#contacto"
+							className="mt-4 inline-flex items-center gap-2.5 border-b border-gold pb-2 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:text-gold"
+						>
+							Reservar carta natal
+							<span aria-hidden>↗</span>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>

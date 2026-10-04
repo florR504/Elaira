@@ -5,9 +5,10 @@ import { SecuenciaLunar, type FaseLunar } from '@/components/UI/SecuenciaLunar'
  * voz del sitio y el largo que tendrían las reales, pero hay que reemplazarlas
  * por las tuyas.
  *
- * El recorrido va de luna llena a luna nueva y ahí termina: de la nueva en
- * adelante la Luna vuelve a crecer y las siluetas repiten las de esta mitad,
- * espejadas.
+ * El recorrido con el scroll va de luna llena a luna nueva y ahí termina: de
+ * la nueva en adelante las siluetas repiten las de esta mitad, espejadas. Las
+ * cuatro crecientes están igual porque el buscador de fecha sí puede caer en
+ * ellas — quien nació en cuarto creciente tiene que encontrarse.
  */
 const FASES: FaseLunar[] = [
 	{
@@ -35,6 +36,21 @@ const FASES: FaseLunar[] = [
 		descripcion:
 			'Empezaste con la página en blanco. Hay un impulso de arranque que no se apaga: se te dan los comienzos, aunque no siempre estés para ver cómo terminan.',
 	},
+	{
+		nombre: 'Creciente',
+		descripcion:
+			'Naciste con el primer envión ya dado. Tu desafío es sostener lo que empezaste cuando deja de ser novedoso, que es justo donde se decide si algo existe o no.',
+	},
+	{
+		nombre: 'Cuarto creciente',
+		descripcion:
+			'La fase de la crisis fértil. Te formaste empujando contra algo, y la tensión no es un obstáculo en tu carta: es el motor con el que construís.',
+	},
+	{
+		nombre: 'Gibosa creciente',
+		descripcion:
+			'Casi llena, todavía en camino. Hay una exigencia de perfeccionar antes de mostrar, y el aprendizaje es soltar la obra aunque no esté terminada del todo.',
+	},
 ]
 
 /**
@@ -60,11 +76,12 @@ export function SabiasQue() {
 				>
 					La memoria lunar de <em className="italic text-gold-bright">tu encarnación</em>
 				</h2>
-				<p className="mt-8  text-cuerpo text-fg-secondary">
-					La astrología popular te habla mucho de tu Sol, tu Luna y tu Ascendente Pero muy
-					pocos te hablan de la fase lunar en la que naciste. Y sin embargo esta
-					enformación revela algo profundo: en que momento del ciclo evolutivo te
-					encuentras al llegar a esta vida.
+				<p className="mt-8 max-w-[52ch] text-cuerpo text-fg-secondary">
+					La astrología popular te habla mucho de tu Sol, tu Luna y tu Ascendente. Pero
+					muy pocos te hablan de la fase lunar en la que naciste. Y sin embargo esta
+					información revela algo profundo: en qué momento del ciclo evolutivo te
+					encuentras al llegar a esta vida. Estos son algunos ejemplos de las fases
+					principales.
 				</p>
 			</div>
 
