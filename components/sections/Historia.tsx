@@ -44,19 +44,19 @@ const CHAPTERS = [
 		label: '01 — EL ORIGEN',
 		title: 'Siempre estuvo ahí',
 		lead: 'De chica, nunca imaginé que terminaría leyendo las estrellas para vivir. Pero mirando hacia atrás, las señales siempre estuvieron ahí.',
-		close: 'Mi casa 10 en Acuario ya sabía lo que mi mente consciente tardaria años en entender - que mi camino no iba a parecerse al de nadie.',
+		close: 'Mi casa 10 en Acuario ya sabía lo que mi mente consciente tardaría años en entender - que mi camino no iba a parecerse al de nadie.',
 	},
 	{
 		label: '02 — EL ENCUENTRO',
 		title: 'La desconexión',
 		lead: 'Antes del 2020, vivía con ansiedad crónica. No sabía por qué sentía todo tan intensamente. Todo me parecía demasiado bello y doloroso a la vez.',
-		close: 'Viví con esa tensión durante años, como si algo enorme esperara debajo de la superficie listo para emerger pero sin permiso para hacerlo',
+		close: 'Viví con esa tensión durante años, como si algo enorme esperara debajo de la superficie listo para emerger pero sin permiso para hacerlo.',
 	},
 	{
 		label: '03 — EL RENACIMIENTO',
 		title: 'El despertar espiritual',
 		lead: 'En el 2020 todo se quebró. Un amor imposible me desgarró el ego y derrumbó todo lo que creía saber de mi misma. Fue una muerte del ego en tiempo real. Pero de las cenizas emergió algo que no esperaba: un despertar espiritual que desbloqueó dones que no sabía que tenía',
-		close: 'Clariaudiencia. Intuición amplificada. Una percepción de la realidad de la que ya no podía volver atrás. No lo elegí, me eligió a mí',
+		close: 'Clariaudiencia. Intuición amplificada. Una percepción de la realidad de la que ya no podía volver atrás. No lo elegí, me eligió a mí.',
 	},
 	{
 		label: '04 — LA VIDA',
@@ -147,6 +147,31 @@ export function Historia() {
 					))}
 				</div>
 			</div>
+
+			{/* TEXTO DE EJEMPLO: la frase es mía, conviene que la hagas tuya.
+			    El capítulo 05 termina prometiendo "ayudarte a encontrar la tuya" y
+			    hasta acá el relato no llevaba a ningún lado. Esto completa esa
+			    frase retomando el capítulo 01 —lo que la carta sabía antes que
+			    ella—, así que es la conclusión de la historia y no un aviso pegado
+			    al final.
+			    Va fuera de la grilla de dos columnas y a ancho completo: adentro,
+			    el `justify-between` de la columna de texto lo despegaría del
+			    último capítulo. */}
+			<Reveal className="mt-20 border-t border-hairline pt-12 md:mt-seccion-s md:flex md:items-end md:justify-between md:gap-16">
+				<div className="md:max-w-[36rem]">
+					<p className="font-heading text-titulo-xs font-normal text-fg-primary">
+						Yo tardé años en entender lo que mi carta decía desde el principio.
+					</p>
+					<p className="mt-4 text-cuerpo text-fg-secondary">Vos podés empezar por ahí.</p>
+				</div>
+				<a
+					href="#servicios"
+					className="mt-8 inline-flex shrink-0 items-center gap-2.5 border-b border-gold pb-2 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:text-gold md:mt-0"
+				>
+					Ver los servicios
+					<span aria-hidden>↗</span>
+				</a>
+			</Reveal>
 		</section>
 	)
 }
