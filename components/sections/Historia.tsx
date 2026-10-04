@@ -70,6 +70,9 @@ const CHAPTERS = [
 		lead: 'Un día, en clariaudiencia, escuché un nombre: Elaïra. Más tarde descubrí que es una luna que orbita alrededor de Júpiter, el planeta que domina mi carta natal. No fue una coincidencia, fue un reconocimiento.',
 		close: 'Elaïra es la firma vibratoria de mi alma. Y hoy, esa firma tiene un propósito: ayudarte a encontrar la tuya.',
 		closeHighlighted: true,
+		// Solo el último capítulo lo lleva: es el que cierra prometiendo "ayudarte
+		// a encontrar la tuya", y hasta acá el relato no llevaba a ningún lado.
+		cta: 'Ver los servicios',
 	},
 ]
 
@@ -143,35 +146,19 @@ export function Historia() {
 							>
 								{chapter.close}
 							</p>
+							{chapter.cta && (
+								<a
+									href="#servicios"
+									className="mt-7 inline-flex items-center gap-2.5 border-b border-gold pb-2 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:text-gold"
+								>
+									{chapter.cta}
+									<span aria-hidden>↗</span>
+								</a>
+							)}
 						</Reveal>
 					))}
 				</div>
 			</div>
-
-			{/* TEXTO DE EJEMPLO: la frase es mía, conviene que la hagas tuya.
-			    El capítulo 05 termina prometiendo "ayudarte a encontrar la tuya" y
-			    hasta acá el relato no llevaba a ningún lado. Esto completa esa
-			    frase retomando el capítulo 01 —lo que la carta sabía antes que
-			    ella—, así que es la conclusión de la historia y no un aviso pegado
-			    al final.
-			    Va fuera de la grilla de dos columnas y a ancho completo: adentro,
-			    el `justify-between` de la columna de texto lo despegaría del
-			    último capítulo. */}
-			<Reveal className="mt-20 border-t border-hairline pt-12 md:mt-seccion-s md:flex md:items-end md:justify-between md:gap-16">
-				<div className="md:max-w-[36rem]">
-					<p className="font-heading text-titulo-xs font-normal text-fg-primary">
-						Yo tardé años en entender lo que mi carta decía desde el principio.
-					</p>
-					<p className="mt-4 text-cuerpo text-fg-secondary">Vos podés empezar por ahí.</p>
-				</div>
-				<a
-					href="#servicios"
-					className="mt-8 inline-flex shrink-0 items-center gap-2.5 border-b border-gold pb-2 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:text-gold md:mt-0"
-				>
-					Ver los servicios
-					<span aria-hidden>↗</span>
-				</a>
-			</Reveal>
 		</section>
 	)
 }
