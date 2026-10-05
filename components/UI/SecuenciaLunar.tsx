@@ -123,6 +123,7 @@ function Cierre() {
  */
 export function SecuenciaLunar({ fases }: Props) {
 	const seccion = useRef<HTMLDivElement>(null)
+	const bloque = useRef<HTMLDivElement>(null)
 	const lienzo = useRef<HTMLCanvasElement>(null)
 	const imagenes = useRef<(HTMLImageElement | undefined)[]>([])
 	const lado = useRef(0)
@@ -145,11 +146,23 @@ export function SecuenciaLunar({ fases }: Props) {
 
 		const medir = () => {
 			const anchas = window.matchMedia('(min-width: 768px)').matches
-			lado.current = Math.round(
+
+			// El alto sale del bloque fijo y no de `window.innerHeight`. El bloque
+			// mide `svh`, que es el alto de ventana con la barra de direcciones a
+			// la vista y no se mueve mientras esa barra aparece y desaparece;
+			// `innerHeight` sí, y como dispara `resize`, el disco se achicaba y se
+			// agrandaba cada vez que alguien cambiaba de dirección el scroll.
+			const alto = bloque.current?.clientHeight || window.innerHeight
+
+			const nuevo = Math.round(
 				anchas
-					? Math.min(window.innerWidth * 0.46, window.innerHeight - 96, LADO_MAX)
-					: Math.min(window.innerWidth * 0.68, window.innerHeight - RESERVADO, LADO_MAX)
+					? Math.min(window.innerWidth * 0.46, alto - 96, LADO_MAX)
+					: Math.min(window.innerWidth * 0.68, alto - RESERVADO, LADO_MAX)
 			)
+			// Si el tamaño no cambió no hay nada que rehacer: tocar el canvas lo
+			// borra y obliga a repintar.
+			if (nuevo === lado.current) return
+			lado.current = nuevo
 			const dpr = Math.min(window.devicePixelRatio || 1, 2, 880 / lado.current)
 			canvas.width = lado.current * dpr
 			canvas.height = lado.current * dpr
@@ -266,7 +279,10 @@ export function SecuenciaLunar({ fases }: Props) {
 			    reducido no hay recorrido que dar, así que el bloque se achica a
 			    una pantalla en vez de dejar varias de negro vacío. */}
 			<div ref={seccion} className={`relative ${reducido ? '' : 'h-[260svh]'}`}>
-				<div className="sticky top-0 flex h-svh flex-col items-center justify-center gap-4 px-6 md:flex-row md:gap-[6%] md:px-margen">
+				<div
+					ref={bloque}
+					className="sticky top-0 flex h-svh flex-col items-center justify-center gap-4 px-6 md:flex-row md:gap-[6%] md:px-margen"
+				>
 					{/* En desktop el disco va a la izquierda y el texto al costado; en
 				    mobile se apila con el nombre arriba y la lectura abajo.
 				    Un solo DOM para las dos disposiciones: la columna de texto es
