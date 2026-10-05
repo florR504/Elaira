@@ -21,9 +21,14 @@ const RUTA = (i: number) => `/luna/luna_${String(i).padStart(2, '0')}.webp`
  *  bien, pero subir mucho más de esto ya se empieza a ver blando. */
 const LADO_MAX = 680
 
-/** En mobile el texto va arriba y abajo del disco, así que hay que reservarle
- *  alto. En desktop va al costado y el disco se queda con toda la ventana. */
-const RESERVADO = 280
+/** Alto que hay que reservarle al texto en mobile, donde va arriba y abajo del
+ *  disco: el nombre de la fase, el porcentaje, la lectura —que puede llegar a
+ *  ocho líneas— y el buscador. Sale de medir la lectura más larga de las ocho,
+ *  con una fecha ya cargada, que es el peor caso. En pantallas altas no manda
+ *  este término sino el ancho; en las bajas achica el disco en vez de dejar
+ *  que el contenido se desborde. En desktop el texto va al costado y el disco
+ *  se queda con toda la ventana. */
+const RESERVADO = 500
 
 /** Mes sinódico: lo que tarda la Luna en volver a la misma fase. */
 const SINODICO = 29.530588853
@@ -85,6 +90,24 @@ function useMovimientoReducido() {
 	)
 }
 
+/** El remate: lo que la fase deja planteado lo responde la carta natal. */
+function Cierre() {
+	return (
+		<>
+			<p className="mt-7 text-cuerpo text-fg-primary">
+				Tu fase lunar es un dato. Tu carta natal son cientos.
+			</p>
+			<a
+				href="#contacto"
+				className="mt-4 inline-flex items-center gap-2.5 border-b border-gold pb-2 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:text-gold"
+			>
+				Reservar carta natal
+				<span aria-hidden>↗</span>
+			</a>
+		</>
+	)
+}
+
 /**
  * La luna recorre un ciclo completo mientras la sección cruza el viewport.
  *
@@ -125,7 +148,7 @@ export function SecuenciaLunar({ fases }: Props) {
 			lado.current = Math.round(
 				anchas
 					? Math.min(window.innerWidth * 0.46, window.innerHeight - 96, LADO_MAX)
-					: Math.min(window.innerWidth * 0.8, window.innerHeight - RESERVADO, LADO_MAX)
+					: Math.min(window.innerWidth * 0.68, window.innerHeight - RESERVADO, LADO_MAX)
 			)
 			const dpr = Math.min(window.devicePixelRatio || 1, 2, 880 / lado.current)
 			canvas.width = lado.current * dpr
@@ -237,104 +260,112 @@ export function SecuenciaLunar({ fases }: Props) {
 	}
 
 	return (
-		// El alto es lo que le da recorrido al scroll: la luna se queda pegada
-		// arriba mientras la sección entera lo atraviesa. Con movimiento reducido
-		// no hay recorrido que dar —el ciclo no corre—, así que el bloque se
-		// achica a una pantalla en vez de dejar cuatro de negro vacío.
-		<div ref={seccion} className={`relative ${reducido ? '' : 'h-[260svh]'}`}>
-			<div className="sticky top-0 flex h-svh flex-col items-center justify-center gap-6 px-6 md:flex-row md:gap-[6%] md:px-margen">
-				{/* En desktop el disco va a la izquierda y el texto al costado; en
+		<>
+			{/* El alto es lo que le da recorrido al scroll: la luna se queda pegada
+			    arriba mientras la sección entera lo atraviesa. Con movimiento
+			    reducido no hay recorrido que dar, así que el bloque se achica a
+			    una pantalla en vez de dejar varias de negro vacío. */}
+			<div ref={seccion} className={`relative ${reducido ? '' : 'h-[260svh]'}`}>
+				<div className="sticky top-0 flex h-svh flex-col items-center justify-center gap-4 px-6 md:flex-row md:gap-[6%] md:px-margen">
+					{/* En desktop el disco va a la izquierda y el texto al costado; en
 				    mobile se apila con el nombre arriba y la lectura abajo.
 				    Un solo DOM para las dos disposiciones: la columna de texto es
 				    `display:contents` en mobile —sus hijos pasan a ser items del
 				    mismo flex que el canvas— y el intercalado lo resuelve `order`.
 				    Tocar cualquiera de los dos rompe el orden en mobile. */}
-				<canvas
-					ref={lienzo}
-					role="img"
-					aria-label={`Luna en fase ${actual.nombre.toLowerCase()}, ${iluminada}% iluminada`}
-					className="order-2 block shrink-0 md:order-none [filter:drop-shadow(0_0_70px_rgba(150,170,255,0.14))]"
-				/>
+					<canvas
+						ref={lienzo}
+						role="img"
+						aria-label={`Luna en fase ${actual.nombre.toLowerCase()}, ${iluminada}% iluminada`}
+						className="order-2 block shrink-0 md:order-none [filter:drop-shadow(0_0_70px_rgba(150,170,255,0.14))]"
+					/>
 
-				{/* Ancho fijo en desktop: si la columna se encoge con los nombres
+					{/* Ancho fijo en desktop: si la columna se encoge con los nombres
 				    cortos, la fila se recentra y el disco se mueve. */}
-				<div className="contents md:flex md:w-[24rem] md:flex-col md:items-start md:gap-6">
-					<div className="order-1 flex min-h-[4.5rem] flex-col items-center gap-2 text-center md:order-none md:min-h-0 md:items-start md:text-left">
-						<p
-							aria-live="polite"
-							className="font-heading text-titulo-s font-normal text-fg-primary"
-						>
-							{actual.nombre}
-						</p>
-						<p className="font-mono text-etiqueta uppercase tabular-nums text-fg-muted">
-							{iluminada}% iluminada
-						</p>
-					</div>
+					<div className="contents md:flex md:w-[24rem] md:flex-col md:items-start md:gap-6">
+						<div className="order-1 flex min-h-[4.5rem] flex-col items-center gap-2 text-center md:order-none md:min-h-0 md:items-start md:text-left">
+							<p
+								aria-live="polite"
+								className="font-heading text-titulo-xs font-normal text-fg-primary md:text-titulo-s"
+							>
+								{actual.nombre}
+							</p>
+							<p className="font-mono text-etiqueta uppercase tabular-nums text-fg-muted">
+								{iluminada}% iluminada
+							</p>
+						</div>
 
-					<p className="order-3 min-h-[5.5rem] max-w-[34rem] text-center text-cuerpo text-fg-secondary md:order-none md:min-h-0 md:max-w-none md:text-left">
-						{actual.descripcion}
-					</p>
+						<p className="order-3 min-h-[5.5rem] max-w-[34rem] text-center text-cuerpo-s text-fg-secondary md:order-none md:min-h-0 md:max-w-none md:text-left md:text-cuerpo">
+							{actual.descripcion}
+						</p>
 
-					{/* El buscador es lo que cierra la sección: hasta acá el recorrido
+						{/* El buscador es lo que cierra la sección: hasta acá el recorrido
 					    levanta la pregunta "¿cuál es la mía?" y no la contesta. Al
 					    enviar una fecha la luna viaja hasta esa fase y el llamado a
 					    reservar cae justo donde el interés está más alto. */}
-					<div className="order-4 w-full max-w-[34rem] border-t border-hairline pt-7 md:order-none md:max-w-none">
-						<form onSubmit={buscar} className="flex flex-wrap items-end gap-4">
-							<div className="flex flex-1 flex-col gap-2">
-								<label
-									htmlFor="fecha-nacimiento"
-									className="font-mono text-etiqueta uppercase text-fg-muted"
+						<div className="order-4 w-full max-w-[34rem] border-t border-hairline pt-7 md:order-none md:max-w-none">
+							<form onSubmit={buscar} className="flex flex-wrap items-end gap-4">
+								<div className="flex flex-1 flex-col gap-2">
+									<label
+										htmlFor="fecha-nacimiento"
+										className="font-mono text-etiqueta uppercase text-fg-muted"
+									>
+										¿Cuál es la tuya?
+									</label>
+									<input
+										id="fecha-nacimiento"
+										name="fecha"
+										type="date"
+										required
+										max={new Date().toISOString().slice(0, 10)}
+										className="w-full border border-hairline bg-surface-raised px-4 py-3 text-cuerpo text-fg-primary outline-none transition-colors focus:border-gold"
+									/>
+								</div>
+								<button
+									type="submit"
+									className="h-[50px] shrink-0 border border-gold px-6 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:bg-gold hover:text-surface-primary"
 								>
-									¿Cuál es la tuya?
-								</label>
-								<input
-									id="fecha-nacimiento"
-									name="fecha"
-									type="date"
-									required
-									max={new Date().toISOString().slice(0, 10)}
-									className="w-full border border-hairline bg-surface-raised px-4 py-3 text-cuerpo text-fg-primary outline-none transition-colors focus:border-gold"
-								/>
+									Ver mi fase
+								</button>
+							</form>
+
+							{fijada && (
+								<p
+									aria-live="polite"
+									className="mt-5 text-cuerpo-s text-fg-secondary"
+								>
+									El{' '}
+									{fijada.toLocaleDateString('es-AR', {
+										day: 'numeric',
+										month: 'long',
+										year: 'numeric',
+										timeZone: 'UTC',
+									})}{' '}
+									la Luna estaba en{' '}
+									<span className="text-gold-bright">
+										{actual.nombre.toLowerCase()}
+									</span>
+									.
+								</p>
+							)}
+
+							{/* En desktop el cierre entra en la columna; en mobile no, así
+						    que ahí se renderiza después del bloque fijo. */}
+							<div className="hidden md:block">
+								<Cierre />
 							</div>
-							<button
-								type="submit"
-								className="h-[50px] shrink-0 border border-gold px-6 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:bg-gold hover:text-surface-primary"
-							>
-								Ver mi fase
-							</button>
-						</form>
-
-						{fijada && (
-							<p aria-live="polite" className="mt-5 text-cuerpo-s text-fg-secondary">
-								El{' '}
-								{fijada.toLocaleDateString('es-AR', {
-									day: 'numeric',
-									month: 'long',
-									year: 'numeric',
-									timeZone: 'UTC',
-								})}{' '}
-								la Luna estaba en{' '}
-								<span className="text-gold-bright">
-									{actual.nombre.toLowerCase()}
-								</span>
-								.
-							</p>
-						)}
-
-						<p className="mt-7 text-cuerpo text-fg-primary">
-							Tu fase lunar es un dato. Tu carta natal son cientos.
-						</p>
-						<a
-							href="#contacto"
-							className="mt-4 inline-flex items-center gap-2.5 border-b border-gold pb-2 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:text-gold"
-						>
-							Reservar carta natal
-							<span aria-hidden>↗</span>
-						</a>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+
+			{/* El cierre no entra adentro del bloque fijo en mobile: con el nombre,
+			    la luna, la lectura y el buscador ya se pasa del alto de pantalla y
+			    el contenido se desborda por los dos lados. Acá abajo, además, se
+			    lee mejor: llega cuando terminaste de buscar tu fase. */}
+			<div className="px-6 pb-24 md:hidden">
+				<Cierre />
+			</div>
+		</>
 	)
 }
