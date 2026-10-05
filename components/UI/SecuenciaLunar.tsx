@@ -22,7 +22,8 @@ const RUTA = (i: number) => `/luna/luna_${String(i).padStart(2, '0')}.webp`
 const LADO_MAX = 680
 
 /** Alto que hay que reservarle al texto en mobile, donde va arriba y abajo del
- *  disco: el nombre de la fase, el porcentaje, la lectura —que puede llegar a
+ *  disco. En teléfonos altos no manda este término sino el ancho, y el disco
+ *  sale del 80% de la pantalla; en los bajos manda éste y lo achica. El texto: el nombre de la fase, el porcentaje, la lectura —que puede llegar a
  *  ocho líneas— y el buscador. Sale de medir la lectura más larga de las ocho,
  *  con una fecha ya cargada, que es el peor caso. En pantallas altas no manda
  *  este término sino el ancho; en las bajas achica el disco en vez de dejar
@@ -157,7 +158,7 @@ export function SecuenciaLunar({ fases }: Props) {
 			const nuevo = Math.round(
 				anchas
 					? Math.min(window.innerWidth * 0.46, alto - 96, LADO_MAX)
-					: Math.min(window.innerWidth * 0.68, alto - RESERVADO, LADO_MAX)
+					: Math.min(window.innerWidth * 0.8, alto - RESERVADO, LADO_MAX)
 			)
 			// Si el tamaño no cambió no hay nada que rehacer: tocar el canvas lo
 			// borra y obliga a repintar.
