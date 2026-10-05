@@ -22,14 +22,16 @@ const RUTA = (i: number) => `/luna/luna_${String(i).padStart(2, '0')}.webp`
 const LADO_MAX = 680
 
 /** Alto que hay que reservarle al texto en mobile, donde va arriba y abajo del
- *  disco. En teléfonos altos no manda este término sino el ancho, y el disco
- *  sale del 80% de la pantalla; en los bajos manda éste y lo achica. El texto: el nombre de la fase, el porcentaje, la lectura —que puede llegar a
+ *  disco: el nombre de la fase, el porcentaje y la lectura. El buscador no
+ *  cuenta porque en mobile vive abajo, fuera del bloque fijo. En teléfonos
+ *  altos no manda este término sino el ancho; en los bajos manda éste y achica
+ *  el disco. El texto: el nombre de la fase, el porcentaje, la lectura —que puede llegar a
  *  ocho líneas— y el buscador. Sale de medir la lectura más larga de las ocho,
  *  con una fecha ya cargada, que es el peor caso. En pantallas altas no manda
  *  este término sino el ancho; en las bajas achica el disco en vez de dejar
  *  que el contenido se desborde. En desktop el texto va al costado y el disco
  *  se queda con toda la ventana. */
-const RESERVADO = 500
+const RESERVADO = 320
 
 /** Mes sinódico: lo que tarda la Luna en volver a la misma fase. */
 const SINODICO = 29.530588853
@@ -88,6 +90,63 @@ function useMovimientoReducido() {
 		},
 		() => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
 		() => true
+	)
+}
+
+type PropsBuscador = {
+	/** Distinto en cada copia: la de desktop y la de mobile conviven en el DOM. */
+	id: string
+	fijada: Date | null
+	nombre: string
+	onBuscar: (e: React.FormEvent<HTMLFormElement>) => void
+}
+
+/** El campo de fecha y lo que contesta. */
+function Buscador({ id, fijada, nombre, onBuscar }: PropsBuscador) {
+	return (
+		<div className="border-t border-hairline pt-7">
+			{/* Apilado en mobile y en fila desde sm: el campo de fecha nativo mide
+			    distinto en cada navegador —el de iOS es bastante más ancho— y al
+			    lado de un botón se queda sin lugar. */}
+			<form
+				onSubmit={onBuscar}
+				className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-end"
+			>
+				<div className="flex flex-col gap-2 sm:flex-1">
+					<label htmlFor={id} className="font-mono text-etiqueta uppercase text-fg-muted">
+						¿Cuál es la tuya?
+					</label>
+					<input
+						id={id}
+						name="fecha"
+						type="date"
+						required
+						max={new Date().toISOString().slice(0, 10)}
+						className="w-full border border-hairline bg-surface-raised px-4 py-3 text-cuerpo text-fg-primary outline-none transition-colors focus:border-gold"
+					/>
+				</div>
+				<button
+					type="submit"
+					className="h-[50px] w-full shrink-0 border border-gold px-6 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:bg-gold hover:text-surface-primary sm:w-auto"
+				>
+					Ver mi fase
+				</button>
+			</form>
+
+			{fijada && (
+				<p aria-live="polite" className="mt-5 text-cuerpo-s text-fg-secondary">
+					El{' '}
+					{fijada.toLocaleDateString('es-AR', {
+						day: 'numeric',
+						month: 'long',
+						year: 'numeric',
+						timeZone: 'UTC',
+					})}{' '}
+					la Luna estaba en{' '}
+					<span className="text-gold-bright">{nombre.toLowerCase()}</span>.
+				</p>
+			)}
+		</div>
 	)
 }
 
@@ -158,7 +217,7 @@ export function SecuenciaLunar({ fases }: Props) {
 			const nuevo = Math.round(
 				anchas
 					? Math.min(window.innerWidth * 0.46, alto - 96, LADO_MAX)
-					: Math.min(window.innerWidth * 0.8, alto - RESERVADO, LADO_MAX)
+					: Math.min(window.innerWidth * 0.92, alto - RESERVADO, LADO_MAX)
 			)
 			// Si el tamaño no cambió no hay nada que rehacer: tocar el canvas lo
 			// borra y obliga a repintar.
@@ -316,71 +375,34 @@ export function SecuenciaLunar({ fases }: Props) {
 							{actual.descripcion}
 						</p>
 
-						{/* El buscador es lo que cierra la sección: hasta acá el recorrido
-					    levanta la pregunta "¿cuál es la mía?" y no la contesta. Al
-					    enviar una fecha la luna viaja hasta esa fase y el llamado a
-					    reservar cae justo donde el interés está más alto. */}
-						<div className="order-4 w-full max-w-[34rem] border-t border-hairline pt-7 md:order-none md:max-w-none">
-							<form onSubmit={buscar} className="flex flex-wrap items-end gap-4">
-								<div className="flex flex-1 flex-col gap-2">
-									<label
-										htmlFor="fecha-nacimiento"
-										className="font-mono text-etiqueta uppercase text-fg-muted"
-									>
-										¿Cuál es la tuya?
-									</label>
-									<input
-										id="fecha-nacimiento"
-										name="fecha"
-										type="date"
-										required
-										max={new Date().toISOString().slice(0, 10)}
-										className="w-full border border-hairline bg-surface-raised px-4 py-3 text-cuerpo text-fg-primary outline-none transition-colors focus:border-gold"
-									/>
-								</div>
-								<button
-									type="submit"
-									className="h-[50px] shrink-0 border border-gold px-6 font-mono text-etiqueta uppercase text-gold-bright transition-colors hover:bg-gold hover:text-surface-primary"
-								>
-									Ver mi fase
-								</button>
-							</form>
-
-							{fijada && (
-								<p
-									aria-live="polite"
-									className="mt-5 text-cuerpo-s text-fg-secondary"
-								>
-									El{' '}
-									{fijada.toLocaleDateString('es-AR', {
-										day: 'numeric',
-										month: 'long',
-										year: 'numeric',
-										timeZone: 'UTC',
-									})}{' '}
-									la Luna estaba en{' '}
-									<span className="text-gold-bright">
-										{actual.nombre.toLowerCase()}
-									</span>
-									.
-								</p>
-							)}
-
-							{/* En desktop el cierre entra en la columna; en mobile no, así
-						    que ahí se renderiza después del bloque fijo. */}
-							<div className="hidden md:block">
-								<Cierre />
-							</div>
+						{/* El buscador y el cierre entran en la columna solo en desktop.
+						    En mobile van abajo, después del bloque fijo: con la lectura y
+						    el formulario adentro no queda alto para que el disco se vea, y
+						    el botón del índice —que flota en esa esquina— se le monta
+						    encima. */}
+						<div className="order-4 hidden w-full md:order-none md:block">
+							<Buscador
+								id="fecha-nacimiento"
+								fijada={fijada}
+								nombre={actual.nombre}
+								onBuscar={buscar}
+							/>
+							<Cierre />
 						</div>
 					</div>
 				</div>
 			</div>
 
-			{/* El cierre no entra adentro del bloque fijo en mobile: con el nombre,
-			    la luna, la lectura y el buscador ya se pasa del alto de pantalla y
-			    el contenido se desborda por los dos lados. Acá abajo, además, se
-			    lee mejor: llega cuando terminaste de buscar tu fase. */}
+			{/* En mobile el buscador y el cierre van acá abajo. Además de ser lo
+			    único que entra, se leen mejor: llegan cuando ya recorriste las
+			    fases, no compitiendo con la luna por la pantalla. */}
 			<div className="px-6 pb-24 md:hidden">
+				<Buscador
+					id="fecha-nacimiento-movil"
+					fijada={fijada}
+					nombre={actual.nombre}
+					onBuscar={buscar}
+				/>
 				<Cierre />
 			</div>
 		</>
